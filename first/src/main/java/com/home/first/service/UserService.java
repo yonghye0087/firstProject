@@ -1,0 +1,17 @@
+package com.home.first.service;
+
+import java.util.List;
+
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.home.first.dto.UserDto;
+
+public interface UserService {
+	public void create(UserDto UserDto) throws Exception;
+	public UserDto read(String id) throws Exception;
+	public void modify(UserDto UserDto) throws Exception;
+	public void remove(UserDto UserDto) throws Exception;
+	public List<UserDto> listAll() throws Exception;
+	public boolean login(UserDto UserDto) throws Exception;
+}

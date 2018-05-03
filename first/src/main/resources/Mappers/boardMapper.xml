@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.home.first.mapper.boardMapper">
+	<insert id="create" parameterType="com.home.first.dto.BoardDto">
+		INSERT INTO sample(
+			board_title, 
+			board_content, 
+			id, 
+			board_category,
+			board_link
+		)VALUES(
+			#{board_title}, 
+			#{board_content}, 
+			#{id}, 		
+			#{board_category},
+			#{board_link}	
+		)
+	</insert>
+	<select id="read" resultType="com.home.first.dto.BoardDto">
+		SELECT
+			board_idx,
+			board_title,
+			board_content,
+			id,
+			board_hit,
+			board_date,
+			board_category,
+			board_link
+		FROM
+			sample
+		WHERE
+			board_idx = #{board_idx}
+	</select>
+	<update id="update" parameterType="com.home.first.dto.BoardDto">
+		UPDATE
+			sample
+		SET
+			board_title = #{board_title},
+			board_content = #{board_content},
+			board_category = #{board_category},
+			board_link = #{board_link}
+		WHERE
+			board_idx = #{board_idx};	
+	</update>
+	<update id="updateHit" parameterType="com.home.first.dto.BoardDto">
+		UPDATE
+			sample
+		SET
+			board_hit = board_hit + 1
+		WHERE
+			board_idx = #{board_idx};	
+	</update>
+	<delete id="delete">
+		DELETE FROM 
+			sample
+		WHERE 
+			board_idx = #{board_idx}
+	</delete>
+	<select id="listAll" resultType="com.home.first.dto.BoardDto">
+		SELECT 
+			board_idx,
+			board_title,
+			board_content,
+			id,
+			board_hit,
+			board_date,
+			board_category,
+			board_link
+		FROM 
+			sample
+	</select>
+	<select id="currentTime" resultType="String">
+		SELECT now()
+	</select>
+	<select id="boardGetCount" resultType="int">
+		SELECT 
+			count(*)
+		FROM
+			sample;	
+		</select>
+		<select id="boardListByDesc" resultType="com.home.first.dto.BoardDto" parameterType="hashmap">
+		SELECT
+			*
+		FROM
+			sample
+		ORDER BY
+			board_idx DESC limit #{offset}, #{noOfRecords}
+	</select>
+	<select id="boardList" resultType="com.home.first.dto.BoardDto">
+        SELECT
+			* 
+		FROM
+			sample 
+		WHERE 
+			info = 1 
+		ORDER BY 
+			board_idx DESC
+    </select>
+
+</mapper>
