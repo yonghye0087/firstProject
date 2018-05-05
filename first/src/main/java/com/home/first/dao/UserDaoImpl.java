@@ -18,9 +18,15 @@ public class UserDaoImpl implements UserDao{
 	private static String NS="com.home.first.mapper.userMapper";
 	
 	@Override
-	public void create(UserDto userDto) throws Exception {
-		sqlSession.insert(NS+".createUser", userDto);
-		
+	public boolean create(UserDto userDto) throws Exception {
+		boolean result = false;
+		try {
+			sqlSession.insert(NS+".createUser", userDto);
+			result = true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;	
 	}
 
 	@Override

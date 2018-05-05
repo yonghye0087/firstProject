@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.home.first.dto.UserDto;
 
 public interface UserService {
-	public void create(UserDto UserDto) throws Exception;
+	public boolean create(UserDto UserDto) throws Exception;
 	public UserDto read(String id) throws Exception;
 	public void modify(UserDto UserDto) throws Exception;
 	public void remove(UserDto UserDto) throws Exception;

@@ -5,7 +5,7 @@ import java.util.List;
 import com.home.first.dto.UserDto;
 
 public interface UserDao {
-	public void create(UserDto userDto) throws Exception;
+	public boolean create(UserDto userDto) throws Exception;
 	public UserDto read(String id) throws Exception;
 	public void update(UserDto userDto) throws Exception;
 	public void delete(UserDto userDto) throws Exception;

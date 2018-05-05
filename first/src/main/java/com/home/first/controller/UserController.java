@@ -1,5 +1,9 @@
 package com.home.first.controller;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -7,8 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.home.first.dto.UserDto;
 import com.home.first.service.UserService;
@@ -28,12 +35,13 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/signUpPOST", method = RequestMethod.POST)
-	public String signPOST(UserDto UserDto, Model model) throws Exception{
+	@ResponseBody
+	public String signPOST(@RequestBody UserDto alldata, Model model) throws Exception{
 		logger.info("sign-up POST");
-		logger.info(UserDto.toString());		
-		UService.create(UserDto);
-		model.addAttribute("result","success");
-		return "/User/success";
+		logger.info(alldata.toString());
+		boolean result = UService.create(alldata);
+		logger.info(String.valueOf(result));
+		return String.valueOf(result);
 	}
 	@RequestMapping(value="/loginUserGET", method = RequestMethod.GET)
 	public String loginGET() throws Exception {
@@ -75,4 +83,8 @@ public class UserController {
 		return "/index";
 	}
 	
+	public List<UserDto> userRead(@RequestParam("UserId") String id){
+		
+		return null;
+	}
 }

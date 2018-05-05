@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.home.first.dao.UserDao;
 import com.home.first.dto.UserDto;
+import com.sun.media.jfxmedia.logging.Logger;
 
 @Service
 public class UserServiceImpl implements UserService {	
@@ -17,8 +18,14 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	
 	@Override
-	public void create(UserDto UserDto) throws Exception {
-		userDao.create(UserDto);		
+	public boolean create(UserDto UserDto) throws Exception {
+		UserDto UserDtoCheck = userDao.read(UserDto.getId());
+		System.out.println(UserDtoCheck.toString());
+		boolean result = false;
+		if(UserDtoCheck.equals(null)) {
+			result = userDao.create(UserDto);
+		}
+		return result;		
 	}
 	@Override
 	public UserDto read(String id) throws Exception {		
