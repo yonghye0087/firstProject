@@ -2,6 +2,7 @@ package com.home.first.controller;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -82,9 +83,13 @@ public class UserController {
 		session.invalidate();
 		return "/index";
 	}
-	
-	public List<UserDto> userRead(@RequestParam("UserId") String id){
-		
-		return null;
+	@RequestMapping(value="/userRead", method = RequestMethod.POST)
+	@ResponseBody
+	public UserDto userRead(@RequestParam("UserId") String User_id) throws Exception{
+		logger.info("userRead POST");
+		logger.info(User_id);
+		UserDto userprofile = UService.read(User_id);
+		logger.info(userprofile.toString());
+		return userprofile;
 	}
 }

@@ -11,45 +11,32 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	$(document).ready(function(){
-		var UserIdForProfile =  ${sessionScope.LoginID};
-		if(UserIdForProfile != ""){
+		let UserIdForProfile =  document.getElementById("sessionId").value;
+		console.log(UserIdForProfile);
+		if(UserIdForProfile != null){
 			$.ajax({
-				type: "GET",
-				url: "/userRead",
-				date: {UserId : UserIdForProfile},
-				dataType: "json",
+				type: "POST",
+				url: "userRead",
+				data: {UserId : UserIdForProfile},
 				success: function(data){
-					/* 
-					ajax로 개인정보 불러와서 밑에 부분에 뿌려주기. 
-					유저 디비에 이미지를 텍스트로 저장하는 컬럼 만들기.
-					디비 항목 추가하기.(아이디, 비밀번호, 가입날짜, 힌트, 이름, 성별, 나이, 이메일, 프로필 문구, 프로필 아이콘, 등등)
-					*/
+					console.log(data);
+					var outprofile = '';
+					outprofile += '<div></div>'
+					outprofile += '<br>'
+					outprofile += '<div>'+data.id+'</div>'	
+					outprofile += '<div><button type="button" class="btn btn-default">정보변경</button></div>'
+					$('#profileBody').append(outprofile);	
 				},
 				error: function(){
-					
+					alert("통신에러");
 				}
-			});
-		}else{
-
-		}		
-		
+			});		
+		}
 	});
 </script>
 </head>
 <body>
-	<table>
-		<thead>
-			<tr>
-				<th>UserIcon</th><br> <!-- 아이콘 클릭시 수정화면 보여주기 -->
-				<th>UserID</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>UserDate</td>	<!-- 가입한지 몇일째인지 -->
-				<td>UserSetting</td>	<!-- 클릭시 개인정보 수정 -->
-			</tr>
-		</tbody>
-	</table>
+	<input type="hidden" id="sessionId" value="${sessionScope.LoginID}">
+	<div id="profileBody"></div>	
 </body>
 </html>

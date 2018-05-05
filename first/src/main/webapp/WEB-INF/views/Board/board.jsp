@@ -47,7 +47,8 @@
 	}
   	
   	function boardWrite(){
-  		var LoginID = sessionStorage.getItem('LoginID');
+  		var LoginID = '${sessionScope.LoginID}'
+  		console.log(LoginID);
   		if(LoginID != null){
   			document.location.href = "boardWrite";	
   		}else{
