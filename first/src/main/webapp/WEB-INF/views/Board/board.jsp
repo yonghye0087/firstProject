@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <style>
+  <style type="text/css">
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
       margin-bottom: 0;
@@ -72,11 +72,10 @@
 	    </div>
 	    <div class="col-sm-8 text-left"> 
 	    	<h1>Board</h1>
-	    	<button type="submit" class="btn btn-default" onclick="boardWrite()">글쓰기</button>
 			<table class="table row">
 				<thead>
 					<tr>
-						<th class="col-md-1" style="text-align: left;;">번호</th>
+						<th class="col-md-1" style="text-align: left;">번호</th>
 						<th class="col-md-5" style="text-align: center;">제목</th>
 						<th class="col-md-2" style="text-align: right;">작성자</th>
 						<th class="col-md-2" style="text-align: right;">조회수</th>
@@ -95,13 +94,13 @@
 					</c:forEach>
 				</tbody>			
 			</table>
-			
+			<button type="submit" class="btn btn-default" onclick="boardWrite()">글쓰기</button>
 		
 		
 		<!-- 페이징  -->
 		<c:choose>
-			<c:when test="${paging.numberOfRecords ne NULL and paging.numberOfRecords ne '' and paging.numberOfRecords ne 0}">
-				<div class="text-center marg-top">
+			<c:when test="${paging.numberOfRecords ne NULL and paging.numberOfRecords ne '' and paging.numberOfRecords ne 0}">				
+				<div class="text-center marg-top">					
 					<ul class="pagination">
 						<c:if test="${paging.currentPageNo gt 5}">    
 							

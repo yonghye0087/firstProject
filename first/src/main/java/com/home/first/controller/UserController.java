@@ -1,8 +1,5 @@
 package com.home.first.controller;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -62,6 +59,7 @@ public class UserController {
 			if(rs == true) {
 				resultMapping = "/index";
 				session.setAttribute("LoginID", IDCheck.getId());
+				session.setAttribute("UserLv", IDCheck.getLevel());
 				logger.info(IDCheck.getId());
 				CID = 3;
 				model.addAttribute("CheckID", CID);
@@ -91,5 +89,19 @@ public class UserController {
 		UserDto userprofile = UService.read(User_id);
 		logger.info(userprofile.toString());
 		return userprofile;
+	}
+	@RequestMapping(value="/userForLv", method = RequestMethod.GET)
+	public String userForLv(Model model) throws Exception {
+		logger.info("userForLv GET");
+		List<UserDto> allUserList = UService.listAll();
+		logger.info(allUserList.toString());
+		model.addAttribute("allUserList", allUserList);
+		return "/User/userForLv";
+	}
+	@RequestMapping(value="/userModify", method = RequestMethod.GET)
+	public String userModify(@RequestParam("UserID") String id) throws Exception {
+		logger.info("userModify GET");
+		logger.info(id);
+		return null;
 	}
 }

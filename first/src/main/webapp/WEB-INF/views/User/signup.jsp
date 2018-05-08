@@ -231,7 +231,7 @@
 			    	  	<input type="password" class="form-control" id="signUpPw" name="pw" value="qwer1234"/>
 			      	</div>
 			      	
-		      	<label for="pwck">PW : </label>
+		      	<label for="pwck">RE-PW : </label>
 			      	<div class="form-group" id="divSignUpRePw">
 			    	  	<input type="password" class="form-control" id="signUpRePw" value="qwer1234"/>
 			      	</div>

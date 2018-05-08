@@ -21,7 +21,8 @@
 		pw,
 		email,
 		hint,
-		signdate
+		signdate,
+		level
 	FROM
 		user
 	WHERE
@@ -52,7 +53,8 @@
 		pw,
 		email,
 		hint,
-		signdate
+		signdate,
+		level
 	FROM
 		user
 	]]>

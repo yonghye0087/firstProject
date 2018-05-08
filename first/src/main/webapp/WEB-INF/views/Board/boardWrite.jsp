@@ -44,6 +44,7 @@
     	/* width: 100px; */
     }
   </style>
+  <script type="text/javascript" src="<c:url value="/resources/se2/js/service/HuskyEZCreator.js"/>" charset="utf-8"></script>
 </head>
 <body>
 	<%@include file="..//Module/navbar.jsp"%>
@@ -71,12 +72,14 @@
 						<div class="form-group">
 							<input class="form-control title" type="text" name="board_title" placeholder="제목"/>
 						</div>	
-						<div class="form-group">	
-							<textarea class="form-control" name="board_content" rows="10" ></textarea>
-						</div>					
-						<div class="form-group">	
-							<input class="form-control link" type="text" name="board_link" placeholder="link"/>
-						</div>
+						<div class="form-group">
+							<textarea class="form-control" name="board_content" id="ir1" rows="15" cols="100%"></textarea>
+						</div>		
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span> 
+							<input id="email" type="text" class="form-control" name="board_link" placeholder="link">
+							  
+					    </div>
 					</div>
 					<button type="submit" class="btn btn-default">작성완료</button>
 	    		</form>							
@@ -92,4 +95,13 @@
 	  </div>
 	</div>
 </body>
+<script type="text/javascript">
+	var oEditors = [];								
+	nhn.husky.EZCreator.createInIFrame({								
+	    oAppRef: oEditors,								
+	    elPlaceHolder: "ir1",								
+	    sSkinURI: "/resources/se2/SmartEditor2Skin.html",								
+	    fCreator: "createSEditor2"								
+	});
+</script>
 </html>
