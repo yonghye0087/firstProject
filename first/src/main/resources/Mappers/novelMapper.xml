@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.home.first.mapper.novelMapper">
+	<select id="novelListByDesc" resultType="com.home.first.dto.NovelDto" parameterType="hashmap">
+		SELECT
+			*
+		FROM
+			novel
+		WHERE
+			novel_title = #{novel_title}
+		ORDER BY
+			novel_idx DESC limit #{offset}, #{noOfRecords}
+	</select>
+	
+	<select id="novelListByTl" resultType="com.home.first.dto.NovelDto" parameterType="hashmap">
+		SELECT
+			max(novel_idx) as novel_idx,
+			novel_title,
+			novel_id,
+			max(novel_date) as novel_date,
+			max(novel_chapter) as novel_chapter
+		FROM
+			novel
+		GROUP BY
+			novel_title
+		ORDER BY
+			novel_idx DESC limit #{offset}, #{noOfRecords}
+	</select>
+	
+	<select id="readNovelAll" parameterType="String" resultType="com.home.first.dto.NovelDto">
+		SELECT
+			*
+		FROM
+			novel
+		WHERE
+			novel_title = #{novel_title}
+	</select>
+	
+	<select id="novelCount" resultType="int" parameterType="String">
+		SELECT 
+			count(*)
+		FROM
+			novel;
+		WHERE
+			novel_title = #{novel_title}	
+	</select>
+	<select id="novelListCount" resultType="int">
+		SELECT
+			count(c.novel_title)
+		FROM(
+			SELECT 
+				novel_title
+			FROM
+				novel
+			GROUP BY
+				novel_title
+			) AS c
+	</select>
+	
+	<insert id="createNovel" parameterType="com.home.first.dto.NovelDto">
+		INSERT INTO novel(			
+			novel_title,
+			novel_id,
+			novel_content,
+			novel_date,
+			novel_chapter
+		)VALUES(
+			#{novel_title},
+			#{novel_id},
+			#{novel_content},
+			now(),
+			#{novel_chapter}
+		)
+	</insert>
+	
+	<update id="updateNovel" parameterType="int">
+		UPDATE
+			novel
+		SET
+			novel_content,
+			novel_date,
+			novel_chapter
+		WHERE
+			novel_idx = #{novel_idx};	
+	</update>
+	
+	<delete id="deleteNovel" parameterType="int">
+		DELETE FROM 
+			novel
+		WHERE 
+			novel_idx = #{novel_idx};	
+	</delete>
+	
+	<delete id="deleteNovelByTl" parameterType="String">
+		DELETE FROM 
+			novel
+		WHERE 
+			novel_title = #{novel_title};	
+	</delete>
+</mapper>
