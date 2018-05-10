@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>INDEX</title>
+  <title>SIGN UP</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -60,7 +61,7 @@
 		let ck_sign_pw = null;
 		let ck_sign_email = null;
 		let ck_sign_hint = null;
-		
+		let alldata;
 		/* 아이디 유효성 검사 */
   		$('#signUpId').focusout(function(){
   			sign_id = document.getElementById("signUpId").value;
@@ -159,12 +160,14 @@
 	  	$('#signUpSmt').click(function(){
   			console.log("id: "+sign_id+" pw: "+sign_pw+" email: "+sign_email+" hint: "+sign_hint);
 			console.log("C_id: "+ck_sign_id+" C_pw: "+ck_sign_pw+" C_email: "+ck_sign_email+" C_hint: "+ck_sign_hint);
-			let alldata = {id : ck_sign_id , pw : ck_sign_pw, email : ck_sign_email, hint: ck_sign_hint};
+			alldata = {id : ck_sign_id , pw : ck_sign_pw, email : ck_sign_email, hint: ck_sign_hint};
+			
+			console.log(alldata);
 			$.ajax({
 				type: "POST",
 				url: "/signUpPOST",
 				data: JSON.stringify(alldata),
-				contentType: "application/json; charset=UTF-8",
+				contentType : "application/json; charset=UTF-8",
 				dataType: "json",
 				success: function(data){
 					console.log(data);
@@ -179,7 +182,6 @@
 				},
 				error : function(jqXHR, textStatus, errorThrown){
 		            alert("계정 생성 에러 \n" + textStatus + " : " + errorThrown);
-		            self.close();
 				}     
 			})		
 		})
@@ -187,29 +189,7 @@
   </script>
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>                        
-	      </button>
-	      <a class="navbar-brand" href="#">FIRST</a>
-	    </div>
-	    <div class="collapse navbar-collapse" style="" id="myNavbar">
-	      <ul class="nav navbar-nav">
-	        <li><a href="index">Home</a></li>
-	        <li><a href="#">board</a></li>
-	        <li class="active"><a href="#">sign-up</a></li>
-	        <li><a href="#">#</a></li>
-	      </ul>
-	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-	      </ul>
-	    </div>
-	  </div>
-	</nav>
+	<%@include file="../Module/navbar.jsp"%>
 	  
 	<div class="container-fluid text-center">    
 	  <div class="row content">
@@ -220,7 +200,7 @@
 	    </div>
 	    <div class="col-sm-8 text-left"> 
 	    <h2> 회원 가입</h2>
-			<form name="signForm" action="/signUpPOST" method="post">
+			<form id="signForm" action="/signUpPOST" method="post">
 				<label for="id">ID : </label>
 		      		<div class="form-group" id="divSignUpId" >
 		      			<input type="text" class="form-control" id="signUpId" name="id" value="qwer1234" />

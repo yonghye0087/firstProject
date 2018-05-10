@@ -27,7 +27,7 @@
 				success: function(data){
 					console.log(data);
 					var outprofile = '';
-					outprofile += '<div></div>'
+					outprofile += '<div><img alt="x" width="70px" height="70px" src="<c:url value="/resources/ImageFile/UnkownUser.png"/>"></div>'
 					outprofile += '<br>'
 					outprofile += '<div>'+data.id+'</div>'	
 					outprofile += '<div><button type="button" class="btn btn-default" onclick="UserModify()">정보변경</button></div>'
@@ -37,12 +37,11 @@
 					alert("통신에러");
 				}
 			});
-		}
-		function UserModify(){
-			let UserID = document.getElementById("sessionId").value;
-			document.location.href = "/userModify?UserID="+UserID;
-		}
+		}	
 	});
+	function UserModify(){
+		document.location.href = "/userModify";
+	}
 </script>
 </head>
 <body>

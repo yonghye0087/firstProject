@@ -12,7 +12,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="home">Home</a></li>
 				<li><a href="board">board</a></li>
-				<li><a href="#">#</a></li>
+				<li><a href="novel">novel</a></li>
 				<li><a href="#">#</a></li>
 				<c:choose>
 					<c:when test="${sessionScope.UserLv eq 1 }">

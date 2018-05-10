@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+import javax.swing.JFrame;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.home.first.dto.UserDto;
 import com.home.first.service.UserService;
+import com.sun.java.swing.plaf.windows.resources.windows;
 
 @Controller
 public class UserController {	
@@ -99,9 +101,7 @@ public class UserController {
 		return "/User/userForLv";
 	}
 	@RequestMapping(value="/userModify", method = RequestMethod.GET)
-	public String userModify(@RequestParam("UserID") String id) throws Exception {
-		logger.info("userModify GET");
-		logger.info(id);
+	public String userModify() throws Exception {
 		return null;
 	}
 }

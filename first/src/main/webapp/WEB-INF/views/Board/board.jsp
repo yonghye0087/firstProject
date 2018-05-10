@@ -1,12 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>​
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>INDEX</title>
+  <title>BOARD</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -15,7 +14,7 @@
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
       margin-bottom: 0;
-      border-radius: 0;
+      border-radius: 0; 
     }
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
@@ -54,21 +53,16 @@
   		}else{
   			alert("로그인이 필요합니다")
   			document.location.href = "loginUserGET";	
-  		}
-  		
+  		} 		
   	}
   </script>
-  
 </head>
 <body>
 	<%@include file="..//Module/navbar.jsp"%>
-	  
 	<div class="container-fluid text-center">    
 	  <div class="row content">
 	    <div class="col-sm-2 sidenav">
-	      <p><a href="#"></a></p>
-	      <p><a href="#"></a></p>
-	      <p><a href="#"></a></p>
+	      <%@ include file="../Module/profile.jsp"%>
 	    </div>
 	    <div class="col-sm-8 text-left"> 
 	    	<h1>Board</h1>

@@ -82,7 +82,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 	@Override
 	public List<BoardDto> boardList(int offset, int noOfRecords) throws Exception {
-		return boardDao.boardList(offset, noOfRecords);
+		return boardDao.boardList(offset, noOfRecords);	
 	}
 	@Override
 	public int boardGetCount() throws Exception {

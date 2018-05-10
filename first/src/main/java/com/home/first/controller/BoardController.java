@@ -1,5 +1,6 @@
 package com.home.first.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class BoardController {
 	public String readBoard(Model model, HttpServletRequest req) throws Exception {
 		//mapping logger
 		logger.info("board GET");
-		
+		logger.info(req.toString());
 		//paging setting
 		int currentPageNo = 1;
 		int maxPost = 10;
@@ -59,7 +60,6 @@ public class BoardController {
 		paging.setNumberOfRecords(Bservice.boardGetCount());
 		
 		paging.makePaging();
-		
 		model.addAttribute("page", page);
 		model.addAttribute("paging", paging);
 		return "/Board/board";
