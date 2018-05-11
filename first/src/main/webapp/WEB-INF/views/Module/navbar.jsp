@@ -10,9 +10,17 @@
 		</div>
 		<div class="collapse navbar-collapse" style="" id="myNavbar">
 			<ul class="nav navbar-nav">
-				<li><a href="home">Home</a></li>
+				<li><a href="home">home</a></li>
 				<li><a href="board">board</a></li>
-				<li><a href="novel">novel</a></li>
+				<c:choose>
+					<c:when test="${!empty sessionScope.LoginID}">
+				<li><a href="novel">My novel</a></li>
+				<li><a href="serialNovelBoard">serial novel board</a></li>
+					</c:when>
+					<c:when test="${empty sessionScope.LoginID}">
+				<li><a href="serialNovelBoard">serial novel board</a></li>
+					</c:when>
+				</c:choose>
 				<li><a href="#">#</a></li>
 				<c:choose>
 					<c:when test="${sessionScope.UserLv eq 1 }">

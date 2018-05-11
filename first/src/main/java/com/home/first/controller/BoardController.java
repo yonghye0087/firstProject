@@ -83,10 +83,27 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/boardContent", method = RequestMethod.GET)
-	public String boardContent(@RequestParam("boardNo") int board_idx, Model model) throws Exception {
+	public String boardContent(@RequestParam("boardNo") int board_idx, Model model, HttpServletRequest req) throws Exception {
 		
 		logger.info("boardContent GET : "+board_idx);	
 		
+		int currentPageNo = 1;
+		int maxPost = 10;
+		
+		if(req.getParameter("pages") != null)
+			currentPageNo = Integer.parseInt(req.getParameter("pages"));
+		
+		Paging paging = new Paging(currentPageNo, maxPost);
+		
+		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
+		
+		ArrayList<BoardDto> page = new ArrayList<BoardDto>();
+		page = (ArrayList<BoardDto>) Bservice.boardList(offset, paging.getMaxPost());
+		paging.setNumberOfRecords(Bservice.boardGetCount());
+		
+		paging.makePaging();
+		model.addAttribute("page", page);
+		model.addAttribute("paging", paging);
 		model.addAttribute("boardRead", Bservice.read(board_idx));
 		
 		return "/Board/boardContent";

@@ -18,7 +18,7 @@
     }
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 850px}
+    .row.content {height: 100%;}
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -28,7 +28,7 @@
     }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: auto;) {
       .sidenav {
         height: auto;
         padding: 15px;
@@ -39,8 +39,18 @@
     	font: bold;
     	font-size: 15px;
     }
+    #userInfoRight{
+    	float: right;
+    }
+    .category{
+    	color: #2F9D27;
+    }
+    .col-sm-8 text-left {
+    	background-color: #FFFFFF; 
+    	height: 100%;
+    }
   </style>
-  <script type="text/javascript" language="javascript">  
+  <script type="text/javascript" language="javascript">  	
   	function goPage(pages, lines) {
 	    location.href = '?' + "pages=" + pages;
 	}
@@ -49,8 +59,7 @@
   		var LoginID = '${sessionScope.LoginID}'
   		console.log(LoginID);
   		if(LoginID != null){
-  			let novel_title = document.getElementById("noveltitle").value;
-  			document.location.href = "novelWrite?novel_title="+novel_title;	
+  			document.location.href = "novelWrite";	
   		}else{
   			alert("로그인이 필요합니다")
   			document.location.href = "loginUserGET";	
@@ -62,13 +71,24 @@
 	<%@include file="..//Module/navbar.jsp"%>
 	<div class="container-fluid text-center">    
 	  <div class="row content">
-	    <div class="col-sm-2 sidenav">
-	      <%@ include file="../Module/profile.jsp"%>
+		<div class="col-sm-2 sidenav">
+	      <p><a href="#"></a></p>
+	      <p><a href="#"></a></p>
+	      <p><a href="#"></a></p>
 	    </div>
-	    <div class="col-sm-8 text-left"> 
-	    	<h1>Board</h1>
-	    	<input type="hidden" id="noveltitle" value="${title}">	
-			<table class="table row">
+	    <div class="col-sm-8 text-left"> 	    	
+	    	<h1>${novelContent.novel_title}</h1><hr>
+	    		<div class="well well-sm">
+					<h4><span class="category">[${novelContent.novel_chapter}]</span>${novelContent.novel_subtitle}</h4>
+					<div><span class="glyphicon glyphicon-user"></span> ${novelContent.novel_id}
+					<div id="userInfoRight"><span class="glyphicon glyphicon-time"></span> <fmt:formatDate value="${novelContent.novel_date}" pattern="YYYY-MM-dd hh:MM:ss"/>
+					<span class="glyphicon glyphicon-eye-open"></span> ${novelContent.novel_hit}</div></div>
+				</div>
+				<div class="well well-sm" style="min-height: 500px; max-height: auto; background-color: white;">	
+					<div style="height: auto;">${novelContent.novel_content}</div>								
+				</div>		
+	    <hr>
+	    <table class="table row">
 				<thead>
 					<tr>
 						<th class="col-md-1" style="text-align: center;">글번호</th>
@@ -88,10 +108,11 @@
 						<td class="col-md-2" style="text-align: center;"><fmt:formatDate value="${list.novel_date}" pattern="YYYY-MM-dd"/></td>
 					</tr>
 					</c:forEach>
-				</tbody>		
+				</tbody>			
 			</table>
 			<button type="submit" class="btn btn-default" onclick="novelWrite()">소설쓰기</button>
-			
+		
+		
 		<!-- 페이징  -->
 		<c:choose>
 			<c:when test="${paging.numberOfRecords ne NULL and paging.numberOfRecords ne '' and paging.numberOfRecords ne 0}">				
@@ -126,7 +147,7 @@
 				</div>
 			</c:when>
 		</c:choose>
-	    </div>
+		</div>
 	    <div class="col-sm-2 sidenav">
 	      <div class="well">
 	        <p></p>

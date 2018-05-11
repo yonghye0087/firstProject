@@ -76,7 +76,7 @@ public class UserController {
 			model.addAttribute("CheckID", CID);
 			logger.info("Rechecking ID");
 		}
-		return resultMapping;	//백스페이스로 못돌아가게 완전이동 시키기	
+		return resultMapping;
 	}
 	@RequestMapping(value="/logoutGET", method = RequestMethod.GET)
 	public String logoutGET(HttpSession session, Model model) {

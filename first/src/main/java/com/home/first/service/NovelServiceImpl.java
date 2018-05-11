@@ -27,16 +27,16 @@ public class NovelServiceImpl implements NovelService{
 	}
 
 	@Override
-	public List<NovelDto> readNovelByTl(int offset, int noOfRecords, String novel_title) throws Exception {
+	public List<NovelDto> readNovelByTl(int offset, int noOfRecords, String novel_title, String loginID) throws Exception {
 		// 챕터별로 리스트를 불러오는 기능 한 페이지에 표시되는 화면을 제한한다.
 		logger.info("readNovelByCh");
 		logger.info(novel_title);
-		return novelDao.readByTl(offset, noOfRecords, novel_title);
+		return novelDao.readByTl(offset, noOfRecords, novel_title, loginID);
 	}
 	
-	public List<NovelDto> readListByTl(int offset, int noOfRecords) throws Exception {
+	public List<NovelDto> readListByTl(int offset, int noOfRecords, String loginID) throws Exception {
 		logger.info("readListByTl"+ offset +" : "+ noOfRecords);	
-		return novelDao.readListByTl(offset, noOfRecords);
+		return novelDao.readListByTl(offset, noOfRecords, loginID);
 	}
 
 	@Override
@@ -74,6 +74,24 @@ public class NovelServiceImpl implements NovelService{
 	public int countForList() throws Exception {
 		// 소설의 타이틀의 숫자를 카운트
 		return novelDao.listCount();
+	}
+
+	@Override
+	public int readHitSum(String novel_title, String loginID) throws Exception {
+		// 각 작품들의 조회수를 종합적으로 더해서 보여주기	
+		return novelDao.readHitSum(loginID, novel_title);
+	}
+
+	@Override
+	public NovelDto read(int novel_idx) throws Exception {
+		// 소설 내용을 볼수 있는 화면 &수정 할때 화면을 불러올수 있는 화면
+		return novelDao.read(novel_idx);
+	}
+
+	@Override
+	public List<NovelDto> readNovel() throws Exception {
+		// serial novel list의 목록을 불러온다.
+		return novelDao.novelList();
 	}
 
 	

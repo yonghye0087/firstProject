@@ -1,5 +1,6 @@
 package com.home.first.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,11 +28,12 @@ public class NovelDaoImpl implements NovelDao {
 	}
 
 	@Override
-	public List<NovelDto> readByTl(int offset, int noOfRecords, String novel_title) throws Exception {
+	public List<NovelDto> readByTl(int offset, int noOfRecords, String novel_title, String loginID) throws Exception {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("offset", offset);
 		params.put("noOfRecords", noOfRecords);
 		params.put("novel_title", novel_title);
+		params.put("novel_id", loginID);
 		return sqlSession.selectList(NS+".novelListByDesc", params);
 	}
 
@@ -54,16 +56,35 @@ public class NovelDaoImpl implements NovelDao {
 	}
 
 	@Override
-	public List<NovelDto> readListByTl(int offset, int noOfRecords) throws Exception {
+	public List<NovelDto> readListByTl(int offset, int noOfRecords, String loginID) throws Exception {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("offset", offset);
 		params.put("noOfRecords", noOfRecords);
+		params.put("novel_id", loginID);
 		return sqlSession.selectList(NS+".novelListByTl", params);
 	}
 
 	@Override
 	public int listCount() throws Exception {
 		return sqlSession.selectOne(NS+".novelListCount");
+	}
+
+	@Override
+	public int readHitSum(String loginID, String novel_title) throws Exception {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("novel_id", loginID);
+		params.put("novel_title", novel_title);
+		return sqlSession.selectOne(NS+".novelHitSum", params);
+	}
+
+	@Override
+	public NovelDto read(int novel_idx) throws Exception {
+		return sqlSession.selectOne(NS+".readNovelByIdx", novel_idx);
+	}
+
+	@Override
+	public List<NovelDto> novelList() throws Exception {
+		return sqlSession.selectList(NS+".novelListByVi");
 	}
 
 	

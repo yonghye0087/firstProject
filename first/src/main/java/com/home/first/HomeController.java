@@ -27,7 +27,6 @@ public class HomeController {
 	}
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String indexToHome(Locale locale, Model model, HttpSession session) {
-		session.invalidate();
 		return "/index";
 	}	
 }

@@ -1,3 +1,4 @@
+<%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
@@ -18,7 +19,7 @@
     }
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 850px}
+    .row.content {height: 100%;}
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -28,7 +29,7 @@
     }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: auto;) {
       .sidenav {
         height: auto;
         padding: 15px;
@@ -53,6 +54,9 @@
     	height: 100%;
     }
     .commentUpdate{
+    	float: right;
+    }
+    #dateHit{
     	float: right;
     }
   </style>
@@ -128,12 +132,16 @@
 	    	<div>						
 				<h2>자유게시판</h2><hr>
 					<div class="well well-sm">
-						<h4><span class="category">[${boardRead.board_category}]</span> ${boardRead.board_title}</h4><hr>
-						<div><span class="glyphicon glyphicon-user"></span> ${boardRead.id}</div>
-						<div><span class="glyphicon glyphicon-time"></span> <fmt:formatDate value="${boardRead.board_date}" pattern="YYYY-MM-dd hh:MM:ss"/>
-						<span class="glyphicon glyphicon-eye-open"></span> ${boardRead.board_hit}</div><hr>
-						<div style="height: auto;">${boardRead.board_content}</div><hr>
-						<div><span class="glyphicon glyphicon-link"></span> : ${boardRead.board_link}</div>
+						<h4><span class="category">[${boardRead.board_category}]</span> ${boardRead.board_title}</h4>
+						<div><span class="glyphicon glyphicon-user"></span> ${boardRead.id}
+						<div id="dateHit"><span class="glyphicon glyphicon-time"></span> <fmt:formatDate value="${boardRead.board_date}" pattern="YYYY-MM-dd hh:MM:ss"/>
+						<span class="glyphicon glyphicon-eye-open"></span> ${boardRead.board_hit}</div></div>
+					</div>
+					<div class="well well-sm" style="min-height: 500px; max-height: auto; background-color: white;" >	
+						<div style="height: auto;" >${boardRead.board_content}</div><hr>
+					</div>
+					<div class="well well-sm">
+						<div><span class="glyphicon glyphicon-link"></span> : <a>${boardRead.board_link}</a></div>
 						<input type="hidden" id="board_idx" value="${boardRead.board_idx}">								
 					</div>
 			</div>
@@ -165,7 +173,67 @@
 						</div>
 					</c:when>
 				</c:choose>
-	
+		<hr>
+		<!-- 게시판 붙여넣기 -->
+		<table class="table row">
+				<thead>
+					<tr>
+						<th class="col-md-1" style="text-align: left;">번호</th>
+						<th class="col-md-5" style="text-align: center;">제목</th>
+						<th class="col-md-2" style="text-align: right;">작성자</th>
+						<th class="col-md-2" style="text-align: right;">조회수</th>
+						<th class="col-md-2" style="text-align: right;">작성일</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="list" items="${page}">
+					<tr>
+						<td class="col-md-1" style="text-align: left;;">${list.board_idx}</td>
+						<td class="col-md-5" style="text-align: left;">[${list.board_category}] <a href="boardContent?boardNo=${list.board_idx}">${list.board_title}</a></td>
+						<td class="col-md-2" style="text-align: right;">${list.id}</td>
+						<td class="col-md-2" style="text-align: right;">${list.board_hit}</td>
+						<td class="col-md-2" style="text-align: right;"><fmt:formatDate value="${list.board_date}" pattern="YYYY-MM-dd"/></td>
+					</tr>
+					</c:forEach>
+				</tbody>			
+			</table>
+			<button type="submit" class="btn btn-default" onclick="boardWrite()">글쓰기</button>
+		
+		
+		<!-- 페이징  -->
+		<c:choose>
+			<c:when test="${paging.numberOfRecords ne NULL and paging.numberOfRecords ne '' and paging.numberOfRecords ne 0}">				
+				<div class="text-center marg-top">					
+					<ul class="pagination">
+						<c:if test="${paging.currentPageNo gt 5}">    
+							
+							<!-- 이전페이지 표시 -->                                          
+							<li><a href="javascript:goPage(${paging.prevPageNo}, ${paging.maxPost})">이전</a></li> 
+						</c:if>
+					
+					<!-- 다른 페이지를 클릭하였을 시, 그 페이지의 내용 및 하단의 페이징 버튼을 생성하는 조건문-->
+					<c:forEach var="i" begin="${paging.startPageNo}" end="${paging.endPageNo}" step="1"> 
+						<c:choose>
+							<c:when test="${i eq paging.currentPageNo}">
+								<li class="active"><a href="javascript:goPage(${i}, ${paging.maxPost})">${i}</a></li> 
+							</c:when>
+							<c:otherwise>
+								<li><a href="javascript:goPage(${i}, ${paging.maxPost})">${i}</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					<!-- 소수점 제거 =>-->
+					<fmt:parseNumber var="currentPage" integerOnly="true" value="${(paging.currentPageNo-1)/5}"/>
+					<fmt:parseNumber var="finalPage" integerOnly="true" value="${(paging.finalPageNo-1)/5}"/>
+					
+					<c:if test="${currentPage < finalPage}"> 
+						<li><a href="javascript:goPage(${paging.nextPageNo}, ${paging.maxPost})">다음</a></li>
+					</c:if>
+				    </ul>
+				</div>
+			</c:when>
+		</c:choose>
 	    </div>
 	    <div class="col-sm-2 sidenav">
 	      <div class="well">
@@ -177,5 +245,6 @@
 	    </div>
 	  </div>
 	</div>
+	
 </body>
 </html>

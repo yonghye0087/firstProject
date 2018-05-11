@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.home.first.mapper.novelMapper">
+	<select id="novelListByVi" resultType="com.home.first.dto.NovelDto">
+		SELECT
+			novel_title,
+			novel_id,
+			novel_hit
+		FROM
+			novel
+		WHERE
+			novel_visibility = 1
+		GROUP BY
+			novel_title
+	</select>
 	<select id="novelListByDesc" resultType="com.home.first.dto.NovelDto" parameterType="hashmap">
 		SELECT
 			*
 		FROM
 			novel
 		WHERE
-			novel_title = #{novel_title}
+			novel_title = #{novel_title} AND novel_id = #{novel_id}
 		ORDER BY
 			novel_idx DESC limit #{offset}, #{noOfRecords}
 	</select>
@@ -21,29 +33,32 @@
 			max(novel_chapter) as novel_chapter
 		FROM
 			novel
+		WHERE
+			novel_id = #{novel_id} 
 		GROUP BY
 			novel_title
 		ORDER BY
 			novel_idx DESC limit #{offset}, #{noOfRecords}
 	</select>
 	
-	<select id="readNovelAll" parameterType="String" resultType="com.home.first.dto.NovelDto">
+	<select id="readNovelByIdx" parameterType="int" resultType="com.home.first.dto.NovelDto">
 		SELECT
 			*
 		FROM
 			novel
 		WHERE
-			novel_title = #{novel_title}
+			novel_idx = #{novel_idx}
 	</select>
 	
 	<select id="novelCount" resultType="int" parameterType="String">
 		SELECT 
 			count(*)
 		FROM
-			novel;
+			novel
 		WHERE
 			novel_title = #{novel_title}	
 	</select>
+	
 	<select id="novelListCount" resultType="int">
 		SELECT
 			count(c.novel_title)
@@ -56,20 +71,30 @@
 				novel_title
 			) AS c
 	</select>
+	<select id="novelHitSum" resultType="int" parameterType="hashmap">
+		SELECT
+			SUM(novel_hit)
+		FROM
+			novel
+		WHERE
+			novel_id = #{novel_id} AND novel_title = #{novel_title}
+	</select>
 	
 	<insert id="createNovel" parameterType="com.home.first.dto.NovelDto">
-		INSERT INTO novel(			
+		INSERT INTO novel(
 			novel_title,
 			novel_id,
 			novel_content,
-			novel_date,
-			novel_chapter
+			novel_chapter,
+			novel_visibility,
+			novel_subtitle
 		)VALUES(
 			#{novel_title},
 			#{novel_id},
 			#{novel_content},
-			now(),
-			#{novel_chapter}
+			#{novel_chapter},
+			#{novel_visibility},
+			#{novel_subtitle}
 		)
 	</insert>
 	

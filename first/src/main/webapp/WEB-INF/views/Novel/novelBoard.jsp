@@ -45,11 +45,12 @@
 	    location.href = '?' + "pages=" + pages;
 	}
   	
-  	function boardWrite(){
+  	function novelWrite(){
   		var LoginID = '${sessionScope.LoginID}'
   		console.log(LoginID);
   		if(LoginID != null){
-  			document.location.href = "boardWrite";	
+  			let novel_title = "";
+  			document.location.href = "novelWrite?novel_title="+novel_title;	
   		}else{
   			alert("로그인이 필요합니다")
   			document.location.href = "loginUserGET";	
@@ -72,7 +73,8 @@
 						<th class="col-md-5" style="text-align: center;">제목</th>
 						<th class="col-md-2" style="text-align: center;">작성자</th>
 						<th class="col-md-2" style="text-align: center;">챕터수</th>
-						<th class="col-md-3" style="text-align: center;">최근 작성일</th>
+						<th class="col-md-1" style="text-align: center;">조회수 총합</th>
+						<th class="col-md-2" style="text-align: center;">최근 작성일</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -81,12 +83,14 @@
 						<td class="col-md-5" style="text-align: center;"><a href="novelByTl?novel_title=${list.novel_title}">${list.novel_title}</a></td>
 						<td class="col-md-2" style="text-align: center;">${list.novel_id}</td>
 						<td class="col-md-2" style="text-align: center;">${list.novel_chapter}</td>
-						<td class="col-md-3" style="text-align: center;"><fmt:formatDate value="${list.novel_date}" pattern="YYYY-MM-dd"/></td>
+						<td class="col-md-1" style="text-align: center;">${list.novel_hit}</td>
+						<td class="col-md-2" style="text-align: center;"><fmt:formatDate value="${list.novel_date}" pattern="YYYY-MM-dd"/></td>
 					</tr>
 					</c:forEach>
-				</tbody>			
+				</tbody>
+							
 			</table>
-			<button type="submit" class="btn btn-default" onclick="boardWrite()">소설쓰기</button>
+			<button type="submit" class="btn btn-default" onclick="novelWrite()">소설 쓰기</button>
 		
 		
 		<!-- 페이징  -->
