@@ -46,9 +46,10 @@
     	text-align: center;
     	float: left;
     	position: relative;
+    	left: 7%;
+    	right: 7%;
     	width: 200px; 
     	height: 200px; 
-    	border: solid 1px; color: gray;
     	margin-right: 20px;
     	margin-bottom: 10px;
     	
@@ -56,6 +57,7 @@
   </style>
   <script type="text/javascript">
   	$(document).ready(function(){
+  		var imageName;
   		$.ajax({
   			type: "POST",
   			url: "/serialNovelList",
@@ -64,10 +66,12 @@
   				if(data.length > 0){
   				var output = '';
   	  				$.each(data, function(index, item){
-  	  					console.log(data);
-  	  					output += '<div id="listbox">'
+  	  					console.log(item);
+  	  					imageName = item.novel_img_name;
+  	  					output += '<div class="well well-sm" id="listbox">'
+  	  					output += '<img alt="'+imageName+'" width="140px" height="140px" src="<c:url value="/resources/ImageFile/'+imageName+'"/>">'
   	  					output += '<div>'+item.novel_title+'</div>'
-  	  					output += '<div>'+item.novel_id+'</div>'
+  	  					output += '<div>'+item.novel_nickname+'</div>'
   	  					output += '</div>'
   	  	  	  		});
   	  	  	  		$('#novelList').append(output);

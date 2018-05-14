@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.home.first.dao.NovelDao;
 import com.home.first.dto.NovelDto;
+import com.home.first.dto.NovelProfileDto;
 
 @Service
 public class NovelServiceImpl implements NovelService{
@@ -35,6 +36,7 @@ public class NovelServiceImpl implements NovelService{
 	}
 	
 	public List<NovelDto> readListByTl(int offset, int noOfRecords, String loginID) throws Exception {
+		//로그인 한 아이디가 생성한 소설들을 목록으로 불러들인다.
 		logger.info("readListByTl"+ offset +" : "+ noOfRecords);	
 		return novelDao.readListByTl(offset, noOfRecords, loginID);
 	}
@@ -89,9 +91,23 @@ public class NovelServiceImpl implements NovelService{
 	}
 
 	@Override
-	public List<NovelDto> readNovel() throws Exception {
+	public List<NovelProfileDto> readNovel() throws Exception {
 		// serial novel list의 목록을 불러온다.
 		return novelDao.novelList();
+	}
+
+	@Override
+	public NovelProfileDto read(String novel_id, String novel_title) throws Exception {
+		// 소설의 개별적으로 기입한 프로필을 읽어들여서 보여준다.
+		logger.info(novel_id+" : "+novel_title);
+		return novelDao.read(novel_id, novel_title);
+	}
+
+	@Override
+	public void create(NovelProfileDto novelProfileDto) throws Exception {
+		// 소설의 프로필을 저장한다.
+		novelDao.create(novelProfileDto);
+		
 	}
 
 	

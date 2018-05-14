@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.home.first.mapper.novelMapper">
-	<select id="novelListByVi" resultType="com.home.first.dto.NovelDto">
+	
+	<select id="novelProfile" resultType="com.home.first.dto.NovelProfileDto" parameterType="hashmap">
 		SELECT
+			novel_title_idx,
+			novel_nickname,
 			novel_title,
 			novel_id,
-			novel_hit
+			novel_img_name,
+			novel_img_size,
+			novel_visibility
 		FROM
-			novel
+			profilenovel
+		WHERE
+			novel_id = #{novel_id} AND novel_title = #{novel_title}
+			
+	</select>
+	
+	<select id="novelListByVi" resultType="com.home.first.dto.NovelProfileDto">
+		SELECT
+			*
+		FROM
+			profilenovel
 		WHERE
 			novel_visibility = 1
 		GROUP BY
 			novel_title
 	</select>
+	
 	<select id="novelListByDesc" resultType="com.home.first.dto.NovelDto" parameterType="hashmap">
 		SELECT
 			*
@@ -95,6 +111,24 @@
 			#{novel_chapter},
 			#{novel_visibility},
 			#{novel_subtitle}
+		)
+	</insert>
+	
+	<insert id="createNovelProfile" parameterType="com.home.first.dto.NovelProfileDto">
+		INSERT INTO profilenovel(
+			novel_nickname,
+			novel_title,
+			novel_id,
+			novel_img_name,
+			novel_img_size,
+			novel_visibility
+		)VALUES(
+			#{novel_nickname},
+			#{novel_title},
+			#{novel_id},
+			#{novel_img_name},
+			#{novel_img_size},
+			#{novel_visibility}
 		)
 	</insert>
 	

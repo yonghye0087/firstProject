@@ -27,10 +27,10 @@
 				success: function(data){
 					console.log(data);
 					var outprofile = '';
-					outprofile += '<div><img alt="x" width="70px" height="70px" src="<c:url value="/resources/ImageFile/UnkownUser.png"/>"></div>'
+					outprofile += '<div class="well well-sm"><img alt="x" width="70px" height="70px" src="<c:url value="/resources/ImageFile/UnkownUser.png"/>">'
 					outprofile += '<br>'
 					outprofile += '<div>'+data.id+'</div>'	
-					outprofile += '<div><button type="button" class="btn btn-default" onclick="UserModify()">정보변경</button></div>'
+					outprofile += '<div><button type="button" class="btn btn-default" onclick="UserModify()">정보변경</button></div></div>'
 					$('#profileBody').append(outprofile);	
 				},
 				error: function(){
