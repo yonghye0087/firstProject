@@ -197,7 +197,7 @@ public class NovelController {
 		logger.info("profileModify POST");
 		String title = URLEncoder.encode(novel_title, "UTF-8");
 		if(novel_file != null) {
-			//중복되는 파일 이름 변경하기
+			//중복되는 파일 이름 변경하기1
 			String originalName = novel_file.getOriginalFilename();
 			int nameLength = originalName.length();
 			int extSub = originalName.lastIndexOf(".");
