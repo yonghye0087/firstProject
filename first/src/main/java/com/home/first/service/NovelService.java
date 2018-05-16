@@ -32,4 +32,6 @@ public interface NovelService {
 	public NovelProfileDto read(String novel_id, String novel_title) throws Exception;
 	//소설의 프로필을 저장한다
 	public void create(NovelProfileDto novelProfileDto) throws Exception;
+	//소설의 공개여부만 변경
+	public void updateForVi(String novel_title ,int novel_visibility, String novel_id) throws Exception;
 }

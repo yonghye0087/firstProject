@@ -110,5 +110,11 @@ public class NovelServiceImpl implements NovelService{
 		
 	}
 
+	@Override
+	public void updateForVi(String novel_title, int novel_visibility, String novel_id) throws Exception {
+		novelDao.updateForVi(novel_title, novel_visibility, novel_id);
+		
+	}
+
 	
 }

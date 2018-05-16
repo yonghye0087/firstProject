@@ -125,9 +125,21 @@ public class NovelDaoImpl implements NovelDao {
 
 	@Override
 	public void create(NovelProfileDto novelProfileDto) throws Exception {
-		//소설의 프로필을 읽어들인다.
+		//소설의 프로필을 만든다.
+		logger.info(novelProfileDto.toString());
 		sqlSession.insert(NS+".createNovelProfile", novelProfileDto);
 		
+	}
+
+	@Override
+	public void updateForVi(String novel_title, int novel_visibility, String novel_id) throws Exception {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("novel_id", novel_id);
+		params.put("novel_title", novel_title);
+		params.put("novel_visibility", novel_visibility);
+		int result = sqlSession.update(NS+".updateForVi", params);
+		logger.info(Integer.toString(result));
+		sqlSession.update(NS+".updateForProVi",params);
 	}
 
 	

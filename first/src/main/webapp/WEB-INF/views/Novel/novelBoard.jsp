@@ -44,18 +44,39 @@
   	function goPage(pages, lines) {
 	    location.href = '?' + "pages=" + pages;
 	}
-  	
-  	function novelWrite(){
+  	function novelProfileCreate(){
   		var LoginID = '${sessionScope.LoginID}'
   		console.log(LoginID);
   		if(LoginID != null){
   			let novel_title = "";
-  			document.location.href = "novelWrite?novel_title="+novel_title;	
+  			document.location.href = "novelProFileCreate";	
   		}else{
   			alert("로그인이 필요합니다")
   			document.location.href = "loginUserGET";	
   		} 		
   	}
+  	$(document).ready(function(){
+  		$('select[name=novel_visibility]').change(function(){
+  			let selboxIndex = $('select[name=novel_visibility]').index(this);
+  			let selTitle = $('a[name='+selboxIndex+']').text();
+  			let selVisibility = document.getElementById("s"+selboxIndex);
+  			let selvi = selVisibility.options[selVisibility.selectedIndex].value;
+  			console.log(selboxIndex +" : "+ selTitle+" : "+selvi);
+  			
+  			$.ajax({
+	  				type: "post",
+	  				url: "/selectVisibility",
+	  				data: {novel_title : selTitle, novel_visibility : selvi},
+	  				success: function(){
+	  					alert("설정변경 완료");
+	  				},
+	  				error: function(){
+	  					alert("대실패!!");
+	  				}
+	  			});
+  		})		
+  	});
+  	
   </script>
 </head>
 <body>
@@ -67,30 +88,52 @@
 	    </div>
 	    <div class="col-sm-8 text-left"> 
 	    	<h1>Novel List</h1>
+	    	<input type="hidden" id="sessionID" value="${sessionScope.LoginID}">
 			<table class="table row">
 				<thead>
 					<tr>
-						<th class="col-md-5" style="text-align: center;">제목</th>
+						<th class="col-md-1" style="text-align: center;">번호</th>
+						<th class="col-md-3" style="text-align: center;">제목</th>
 						<th class="col-md-2" style="text-align: center;">작성자</th>
 						<th class="col-md-2" style="text-align: center;">챕터수</th>
 						<th class="col-md-1" style="text-align: center;">조회수 총합</th>
 						<th class="col-md-2" style="text-align: center;">최근 작성일</th>
+						<th class="col-md-1" style="text-align: center;">공개여부</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="list" items="${page}">
-					<tr>
-						<td class="col-md-5" style="text-align: center;"><a href="novelByTl?novel_title=${list.novel_title}">${list.novel_title}</a></td>
-						<td class="col-md-2" style="text-align: center;">${list.novel_id}</td>
+					<c:forEach var="list" items="${page}" varStatus="status">
+					<tr id="listBody">
+						<td class="col-md-1" style="text-align: center;">${status.count}</td>
+						<td class="col-md-3" style="text-align: center;"><a href="novelByTl?novel_title=${list.novel_title}" name="${status.index}">${list.novel_title}</a></td>
+						<td class="col-md-2" style="text-align: center;" >${list.novel_id}</td>
 						<td class="col-md-2" style="text-align: center;">${list.novel_chapter}</td>
 						<td class="col-md-1" style="text-align: center;">${list.novel_hit}</td>
 						<td class="col-md-2" style="text-align: center;"><fmt:formatDate value="${list.novel_date}" pattern="YYYY-MM-dd"/></td>
+							<c:choose>
+								<c:when test="${list.novel_visibility == 0 || list.novel_visibility eq 0}">
+									<td class="col-md-1" style="text-align: center;">
+										<select class="form-control" id="s${status.index}" name="novel_visibility">
+											<option selected id="selOp" value="0"> 비공개 </option>
+											<option id="selOp" value="1"> 공개 </option>
+										</select>
+									</td>
+								</c:when>
+								<c:when test="${list.novel_visibility == 1 || list.novel_visibility eq 1}">
+									<td class="col-md-1" style="text-align: center;">
+										<select class="form-control" id="s${status.index}" name="novel_visibility">
+											<option id="selOp" value="0"> 비공개 </option>
+											<option selected id="selOp" value="1"> 공개 </option>
+										</select>
+									</td>
+								</c:when>
+							</c:choose>
 					</tr>
 					</c:forEach>
 				</tbody>
 							
 			</table>
-			<button type="submit" class="btn btn-default" onclick="novelWrite()">소설 쓰기</button>
+			<input type="button" class="btn btn-default" onclick="novelProfileCreate()" value="소설 생성">
 		
 		
 		<!-- 페이징  -->

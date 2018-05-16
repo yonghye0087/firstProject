@@ -46,7 +46,8 @@
 			novel_title,
 			novel_id,
 			max(novel_date) as novel_date,
-			max(novel_chapter) as novel_chapter
+			max(novel_chapter) as novel_chapter,
+			novel_visibility
 		FROM
 			novel
 		WHERE
@@ -141,6 +142,24 @@
 			novel_chapter
 		WHERE
 			novel_idx = #{novel_idx};	
+	</update>
+	
+	<update id="updateForVi" parameterType="hashmap">
+		UPDATE
+			novel
+		SET
+			novel_visibility = #{novel_visibility}
+		WHERE
+			novel_id = #{novel_id} AND novel_title = #{novel_title}
+	</update>
+	
+	<update id="updateForProVi" parameterType="hashmap">
+		UPDATE
+			profilenovel
+		SET
+			novel_visibility = #{novel_visibility}
+		WHERE
+			novel_id = #{novel_id} AND novel_title = #{novel_title}
 	</update>
 	
 	<delete id="deleteNovel" parameterType="int">

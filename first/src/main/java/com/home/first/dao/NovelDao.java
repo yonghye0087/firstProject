@@ -16,6 +16,8 @@ public interface NovelDao {
 	public List<NovelDto> readListByTl(int offset, int noOfRecords, String loginID) throws Exception;
 	//소설 수정
 	public void update(NovelDto novelDto) throws Exception;
+	//소설의 공개여부를 변경하기
+	public void updateForVi(String novel_title ,int novel_visibility, String novel_id) throws Exception;
 	//소설 삭제
 	public void delete(Integer novel_idx) throws Exception;
 	//소설 삭제(타이틀을 기준으로 삭제하기)

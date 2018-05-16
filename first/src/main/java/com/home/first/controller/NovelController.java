@@ -1,5 +1,7 @@
 package com.home.first.controller;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.io.File;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -233,6 +235,79 @@ public class NovelController {
 			
 			NService.create(NPDto);
 		}
-		return "redirect:/novelByTl?novel_title="+title;
+		return "redirect:/Novel/novelByTl?novel_title="+title;
+	}
+	@RequestMapping(value="/selectVisibility", method = RequestMethod.POST)
+	@ResponseBody
+	public void selectVisibility(@RequestParam("novel_visibility") int novel_visibility, @RequestParam("novel_title") String novel_title, HttpSession session) throws Exception {
+		logger.info("selectVisibility POST");
+		logger.info(Integer.toString(novel_visibility));
+		logger.info(novel_title);
+		String loginID = session.getAttribute("LoginID").toString();
+		logger.info(loginID);
+		NService.updateForVi(novel_title, novel_visibility, loginID);
+	}
+	@RequestMapping(value="/novelProFileCreate", method = RequestMethod.GET)
+	public String novelProFileCreate() throws Exception {
+		logger.info("novelProFileCreate GET");
+		return "/Novel/novelProFileCreate";
+	}
+	@RequestMapping(value="/novelProFileCreate", method = RequestMethod.POST)
+	@ResponseBody
+	public String novelProFileCreate(@RequestParam("novel_title") String novelTitle, 
+										@RequestParam("novel_visibility") int novelVisibility, 
+										@RequestParam("novel_file") MultipartFile novelFile,
+										@RequestParam("novel_nickname") String novelNickname,
+										HttpSession session) throws Exception {
+		logger.info("NovelProfileDto POST");
+		logger.info(novelFile.getOriginalFilename());
+		logger.info(Integer.toString(novelVisibility));
+		logger.info(novelTitle);
+		logger.info(novelNickname);
+		
+		//선언부
+		String novel_id = session.getAttribute("LoginID").toString();
+		String novel_title = novelTitle;
+		String novel_nickname = novelNickname;
+		int novel_visibility = novelVisibility;
+		//파일이름 변경
+		String originalName = novelFile.getOriginalFilename();
+		int nameLength = originalName.length();
+		int extSub = originalName.lastIndexOf(".");
+		String ext = originalName.substring(extSub+1, nameLength);
+		String fileName = originalName.substring(0, extSub);
+		
+		//오늘날짜 구해서 파일 사이에 넣기
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        Calendar c1 = Calendar.getInstance();
+        String strToday = sdf.format(c1.getTime());
+		String newFileName = fileName+strToday+"."+ext;
+		
+		//파일 크기
+		int fileSize = originalName.length();
+		int checkNum = NService.countByCh(novel_title);
+		if(checkNum == 0) {
+			//적용부
+			NovelProfileDto novelProfileDto = new NovelProfileDto();
+			try {
+				novelProfileDto.setNovel_id(novel_id);
+				novelProfileDto.setNovel_nickname(novel_nickname);
+				novelProfileDto.setNovel_title(novel_title);
+				novelProfileDto.setNovel_visibility(novel_visibility);
+				novelProfileDto.setNovel_img_name(newFileName);
+				novelProfileDto.setNovel_img_size(fileSize);
+				logger.info(novelProfileDto.toString());
+				NService.create(novelProfileDto);
+				NovelProfileDto check2 = NService.read(novel_id, novel_title);
+				if(novelProfileDto.getNovel_title().equals(check2.getNovel_title()) || novelProfileDto.getNovel_title() == check2.getNovel_title()) {
+					String uploadPath = "F:\\WorkSpace\\firstProject\\first\\src\\main\\webapp\\resources\\ImageFile\\";
+					novelFile.transferTo(new File(uploadPath + newFileName));
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return "redirect:/novelByTl?novel_title="+novel_title;
 	}
 }
