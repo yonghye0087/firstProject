@@ -25,8 +25,40 @@
 			profilenovel
 		WHERE
 			novel_visibility = 1
+		
 		GROUP BY
 			novel_title
+	</select>
+	
+	<select id="novelListByViForHit" resultType="com.home.first.dto.NovelDto" parameterType="hashmap">
+		SELECT
+			novel_idx,
+			novel_title,
+			novel_id,
+			novel_content,
+			novel_date,
+			novel_chapter,
+			sum(novel_hit) as novel_hit,
+			novel_visibility,
+			novel_subtitle
+		FROM
+			(SELECT * FROM novel WHERE novel_visibility = 1) AS a
+		GROUP BY
+			novel_title
+		ORDER BY
+			sum(novel_hit) DESC limit #{offset}, #{noOfRecords}
+	</select>
+	<select id="novelByVi" resultType="com.home.first.dto.NovelDto" parameterType="hashmap">
+		SELECT
+			*
+		FROM
+			novel
+		WHERE
+			novel_visibility = 1
+		GROUP BY
+			novel_title
+		ORDER BY
+			novel_date DESC limit #{offset}, #{noOfRecords}
 	</select>
 	
 	<select id="novelListByDesc" resultType="com.home.first.dto.NovelDto" parameterType="hashmap">

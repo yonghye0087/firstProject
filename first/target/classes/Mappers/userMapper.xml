@@ -45,18 +45,14 @@
 		id = #{id}
 		pw = #{pw}
 	</delete>
-	<select id="listAllUser" resultType="com.home.first.dto.UserDto">
+	<select id="listAllUser" parameterType="int" resultType="com.home.first.dto.UserDto">
 	<![CDATA[
-	SELECT
-		no,
-		id,
-		pw,
-		email,
-		hint,
-		signdate,
-		level
-	FROM
-		user
+		SELECT
+			*
+		FROM
+			user
+		WHERE
+			level = #{level}
 	]]>
 	</select>
 </mapper>

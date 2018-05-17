@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
 		userDao.delete(UserDto);
 	}
 	@Override
-	public List<UserDto> listAll() throws Exception {		
-		return userDao.listAll();
+	public List<UserDto> listAll(int level) throws Exception {		
+		return userDao.listAll(level);
 	}
 	
 	@Override

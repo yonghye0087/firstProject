@@ -69,7 +69,7 @@
 	    </div>
 	    <div class="col-sm-8 text-left" >
 	    	<h1>User List</h1>
-			<table class="table row">
+	    	<table class="table row">
 				<thead>
 					<tr>
 						<th class="col-md-2" style="text-align: center;;">No</th>
@@ -80,23 +80,27 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="list" items="${allUserList}">
-					<tr>
-						<td class="col-md-2" style="text-align: center;">${list.no}</td>
-						<td class="col-md-2" style="text-align: center;">${list.id}</td>
-						<td class="col-md-4" style="text-align: center;">${list.email}</td>
-						<td class="col-md-2" style="text-align: center;">${list.signdate}</td>
-						<td class="col-md-2" style="text-align: center;">
-							<c:choose>
-								<c:when test="${list.level eq 0}">
-									일반 회원
-								</c:when>
-								<c:when test="${list.level eq 1}">
-									관리자
-								</c:when>
-							</c:choose>
-						</td>
-					</tr>
+					<c:forEach var="ml" items="${managerList}">
+						
+							<tr>
+								<td class="col-md-2" style="text-align: center;">${ml.no}</td>
+								<td class="col-md-2" style="text-align: center;">${ml.id}</td>
+								<td class="col-md-4" style="text-align: center;">${ml.email}</td>
+								<td class="col-md-2" style="text-align: center;">${ml.signdate}</td>
+								<td class="col-md-2" style="text-align: center;">관리자</td>
+							</tr>
+					</c:forEach>
+				</tbody>
+				<tbody>
+					<hr>
+					<c:forEach var="gl" items="${guestList}">	
+							<tr>
+								<td class="col-md-2" style="text-align: center;">${gl.no}</td>
+								<td class="col-md-2" style="text-align: center;">${gl.id}</td>
+								<td class="col-md-4" style="text-align: center;">${gl.email}</td>
+								<td class="col-md-2" style="text-align: center;">${gl.signdate}</td>
+								<td class="col-md-2" style="text-align: center;">일반 회원</td>
+							</tr>
 					</c:forEach>
 				</tbody>			
 			</table>

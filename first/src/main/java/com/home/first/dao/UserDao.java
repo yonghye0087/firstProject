@@ -9,5 +9,5 @@ public interface UserDao {
 	public UserDto read(String id) throws Exception;
 	public void update(UserDto userDto) throws Exception;
 	public void delete(UserDto userDto) throws Exception;
-	public List<UserDto> listAll() throws Exception;
+	public List<UserDto> listAll(int level) throws Exception;
 }

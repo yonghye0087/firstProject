@@ -116,5 +116,17 @@ public class NovelServiceImpl implements NovelService{
 		
 	}
 
+	@Override
+	public List<NovelDto> readNovelVi(int offset, int noOfRecords) throws Exception {
+		// 공개상태로 돌린 소설목록 부르기 by visibillity
+		return novelDao.readNovelByVi(offset, noOfRecords);
+	}
+
+	@Override
+	public List<NovelDto> novelListfor(int offset, int noOfRecords) throws Exception {
+		//공개 소설 중 조회수 합산 기준으로 상위 5개만 조회하는 기능
+		return novelDao.novelListfor(offset,noOfRecords);
+	}
+
 	
 }

@@ -95,9 +95,10 @@ public class UserController {
 	@RequestMapping(value="/userForLv", method = RequestMethod.GET)
 	public String userForLv(Model model) throws Exception {
 		logger.info("userForLv GET");
-		List<UserDto> allUserList = UService.listAll();
-		logger.info(allUserList.toString());
-		model.addAttribute("allUserList", allUserList);
+		List<UserDto> guestList = UService.listAll(0);
+		List<UserDto> managerList = UService.listAll(1);
+		model.addAttribute("guestList", guestList);
+		model.addAttribute("managerList", managerList);
 		return "/User/userForLv";
 	}
 	@RequestMapping(value="/userModify", method = RequestMethod.GET)

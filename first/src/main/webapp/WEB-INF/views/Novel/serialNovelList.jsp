@@ -39,72 +39,31 @@
     	font: bold;
     	font-size: 15px;
     }
-    #novelList{
+    #imageWell{
     	float: left;
+    	width: 200px;
+    	height: 200px;
     }
-    #listbox{
-    	text-align: center;
-    	float: left;
-    	position: relative;
-    	left: 7%;
-    	right: 7%;
-    	width: 200px; 
-    	height: 200px; 
-    	margin-right: 20px;
-    	margin-bottom: 10px;
-    	
+    .well{
+    	height: 200px;
+    	width: 100%;
     }
   </style>
-  <script type="text/javascript">
-  	$(document).ready(function(){
-  		var imageName;
-  		$.ajax({
-  			type: "POST",
-  			url: "/serialNovelList",
-  			dataType : "json",
-  			success: function(data){
-  				if(data.length > 0){
-  				var output = '';
-  	  				$.each(data, function(index, item){
-  	  					console.log(item);
-  	  					imageName = item.novel_img_name;
-  	  					output += '<a href="#" onclick="serialNovel('+index+')">'
-  	  					output += '<div class="well well-sm" id="listbox">'
-  	  					output += '<img alt="'+imageName+'" width="140px" height="140px" src="<c:url value="/resources/ImageFile/'+imageName+'"/>">'
-  	  					output += '<div name="title'+index+'">'+item.novel_title+'</div>'
-  	  					output += '<div name="nickname'+index+'">'+item.novel_nickname+'</div>'
-  	  					output += '<input type="hidden" name="novel_id'+index+'" value="'+item.novel_id+'"></div></a>'
-  	  					
-  	  	  	  		});
-  	  	  	  		$('#novelList').append(output);
-  				}
-  			},
-  			error:function(request,status,error){
-  		        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-  		    }
-	  	});
-  	});
-  	function serialNovel(index){
-  		let novel_title = $('div[name=title'+index+']').text();
-  		let novel_id = $('input[name=novel_id'+index+']').val();
-  		console.log(novel_title+" : "+novel_id);
-  		
-  		var form = document.createElement("form");
-  		form.setAttribute('method', 'post');
-  		form.setAttribute('action', "/serialNovel");
-			var hiddenField = document.createElement("input");
-				hiddenField.setAttribute('type', 'hidden');
-				hiddenField.setAttribute('name', 'novel_title');
-				hiddenField.setAttribute('value', novel_title);
-			var hiddenField2 = document.createElement("input");
-				hiddenField2.setAttribute('type', 'hidden');
-				hiddenField2.setAttribute('name', 'novel_id');
-				hiddenField2.setAttribute('value', novel_id);
-		console.log(hiddenField)
-		form.appendChild(hiddenField);
-		form.appendChild(hiddenField2);
-		document.body.appendChild(form);
-  		form.submit();
+  <script type="text/javascript" language="javascript">  
+  	function goPage(pages, lines) {
+	    location.href = '?' + "pages=" + pages;
+	}
+  	
+  	function novelWrite(){
+  		var LoginID = '${sessionScope.LoginID}'
+  		console.log(LoginID);
+  		if(LoginID != null){
+  			let novel_title = document.getElementById("noveltitle").value;
+  			document.location.href = "novelWrite?novel_title="+novel_title;	
+  		}else{
+  			alert("로그인이 필요합니다")
+  			document.location.href = "loginUserGET";	
+  		} 		
   	}
   </script>
 </head>
@@ -115,9 +74,16 @@
 	    <div class="col-sm-2 sidenav">
 	    </div>
 	    <div class="col-sm-8 text-left"> 
-	    	<h1>Novel List</h1>
-			<div class="container" id="novelList"></div>
-			<hr>
+	    	<h1>${profileList.novel_title}</h1>
+	    	<input type="hidden" id="noveltitle" value="${profileList.novel_title}">	
+	    	<div class="well">
+	    		<div id="imageWell">
+	    			<img alt="${profileList.novel_img_name}" width="140px" height="140px" src="<c:url value="/resources/ImageFile/${profileList.novel_img_name}"/>">
+	    		</div>
+	    		<div id="imageWell">
+	    			${profileList.novel_title}
+	    		</div>
+	    	</div>
 			<table class="table row">
 				<thead>
 					<tr>

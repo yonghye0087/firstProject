@@ -47,8 +47,8 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public List<UserDto> listAll() throws Exception {
-		return sqlSession.selectList(NS+".listAllUser");
+	public List<UserDto> listAll(int level) throws Exception {
+		return sqlSession.selectList(NS+".listAllUser", level);
 	}
 
 }

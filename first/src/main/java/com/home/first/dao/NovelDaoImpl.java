@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.home.first.controller.NovelController;
 import com.home.first.dto.NovelDto;
 import com.home.first.dto.NovelProfileDto;
 
@@ -112,6 +111,14 @@ public class NovelDaoImpl implements NovelDao {
 		
 		return sqlSession.selectList(NS+".novelListByVi");
 	}
+	@Override
+	public List<NovelDto> novelListfor(int offset, int noOfRecords) throws Exception {
+		//소설의 리스트를 불러들인다(공개된 소설들만 불러들인다. 로그인을 하지 않고도 소설 리스트를 볼수 있도록)
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("offset", offset);
+		params.put("noOfRecords", noOfRecords);
+		return sqlSession.selectList(NS+".novelListByViForHit", params);
+	}
 
 	@Override
 	public NovelProfileDto read(String novel_id, String novel_title) throws Exception {
@@ -140,6 +147,15 @@ public class NovelDaoImpl implements NovelDao {
 		int result = sqlSession.update(NS+".updateForVi", params);
 		logger.info(Integer.toString(result));
 		sqlSession.update(NS+".updateForProVi",params);
+	}
+
+	@Override
+	public List<NovelDto> readNovelByVi(int offset, int noOfRecords) throws Exception {
+		// 공개설정된 소설 리스트를 페이징 해서 불러온다.
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("offset", offset);
+		params.put("noOfRecords", noOfRecords);
+		return sqlSession.selectList(NS+".novelByVi", params);
 	}
 
 	

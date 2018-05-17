@@ -34,4 +34,8 @@ public interface NovelService {
 	public void create(NovelProfileDto novelProfileDto) throws Exception;
 	//소설의 공개여부만 변경
 	public void updateForVi(String novel_title ,int novel_visibility, String novel_id) throws Exception;
+	//공개 상태로 돌려진 소설들의 리스트를 페이징해서 불러들인다.
+	public List<NovelDto> readNovelVi(int offset, int noOfRecords) throws Exception;
+	//공개 소설 중 조회수 합산 기준으로 상위 5개만 조회하는 기능
+	public List<NovelDto> novelListfor(int offset, int noOfRecords) throws Exception;
 }

@@ -1,13 +1,10 @@
 package com.home.first.controller;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.io.File;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,14 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.home.first.dto.NovelDto;
 import com.home.first.dto.NovelProfileDto;
@@ -166,8 +160,28 @@ public class NovelController {
 	}
 	
 	@RequestMapping(value="/serialNovelBoard", method = RequestMethod.GET)
-	public String serialNovelBoard() throws Exception {
+	public String serialNovelBoard(HttpServletRequest req, Model model) throws Exception {
 		logger.info("serialNovelList GET");
+		//페이징
+		int currentPageNo = 1;
+		int maxPost = 10;
+		
+		if(req.getParameter("pages") != null)
+			currentPageNo = Integer.parseInt(req.getParameter("pages"));
+		
+		Paging paging = new Paging(currentPageNo, maxPost);
+		
+		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
+		
+		ArrayList<NovelDto> page = new ArrayList<NovelDto>();
+		page = (ArrayList<NovelDto>) NService.novelListfor(offset, paging.getMaxPost());
+		paging.setNumberOfRecords(NService.countForList());
+		
+		paging.makePaging();
+		
+		model.addAttribute("paging", paging);
+		model.addAttribute("page", page);
+		
 		return "/Novel/serialNovelBoard";
 	}
 	
@@ -309,5 +323,37 @@ public class NovelController {
 		}
 		
 		return "redirect:/novelByTl?novel_title="+novel_title;
+	}
+	
+	@RequestMapping(value="/serialNovel", method =  {RequestMethod.GET, RequestMethod.POST})
+	public String serialNovel(NovelProfileDto novelProfileDto, Model model, HttpServletRequest req) throws Exception {
+		logger.info("serialNovel POST");
+		logger.info(novelProfileDto.toString());
+		String novel_id = novelProfileDto.getNovel_id();
+		String novel_title = novelProfileDto.getNovel_title();
+		NovelProfileDto profileList =  NService.read(novel_id, novel_title);
+		
+		//페이징
+		int currentPageNo = 1;
+		int maxPost = 10;
+		
+		if(req.getParameter("pages") != null)
+			currentPageNo = Integer.parseInt(req.getParameter("pages"));
+		
+		Paging paging = new Paging(currentPageNo, maxPost);
+		
+		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
+		
+		ArrayList<NovelDto> page = new ArrayList<NovelDto>();
+		page = (ArrayList<NovelDto>) NService.readNovelByTl(offset, paging.getMaxPost(),novel_title, novel_id);
+		paging.setNumberOfRecords(NService.countByCh(novel_title));
+		
+		paging.makePaging();
+		
+		model.addAttribute("paging", paging);
+		model.addAttribute("profileList", profileList);
+		model.addAttribute("page", page);
+		
+		return "/Novel/serialNovelList";
 	}
 }
