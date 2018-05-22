@@ -37,7 +37,7 @@ public class NovelServiceImpl implements NovelService{
 	
 	public List<NovelDto> readListByTl(int offset, int noOfRecords, String loginID) throws Exception {
 		//로그인 한 아이디가 생성한 소설들을 목록으로 불러들인다.
-		logger.info("readListByTl"+ offset +" : "+ noOfRecords);	
+		logger.info("readListByTl "+ offset +" : "+ noOfRecords);	
 		return novelDao.readListByTl(offset, noOfRecords, loginID);
 	}
 
@@ -97,10 +97,11 @@ public class NovelServiceImpl implements NovelService{
 	}
 
 	@Override
-	public NovelProfileDto read(String novel_id, String novel_title) throws Exception {
+	public NovelProfileDto readProfile(String novel_id, String novel_title) throws Exception {
 		// 소설의 개별적으로 기입한 프로필을 읽어들여서 보여준다.
 		logger.info(novel_id+" : "+novel_title);
-		return novelDao.read(novel_id, novel_title);
+		logger.info(novelDao.readProfile(novel_id, novel_title).toString());
+		return novelDao.readProfile(novel_id, novel_title);
 	}
 
 	@Override
@@ -126,6 +127,18 @@ public class NovelServiceImpl implements NovelService{
 	public List<NovelDto> novelListfor(int offset, int noOfRecords) throws Exception {
 		//공개 소설 중 조회수 합산 기준으로 상위 5개만 조회하는 기능
 		return novelDao.novelListfor(offset,noOfRecords);
+	}
+
+	@Override
+	public List<NovelProfileDto> readNovelProfile(int offset, int noOfRecords, String novel_id) throws Exception {
+		// 아이디를 검색해 해당 소설프로필들을 읽어드리는 기능
+		return novelDao.novelProfileList(offset,noOfRecords,novel_id);
+	}
+
+	@Override
+	public void profileModity(String title, String nickname) throws Exception {
+		// 개인 프로필을 수정하는 기능
+		
 	}
 
 	

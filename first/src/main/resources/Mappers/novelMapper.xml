@@ -30,6 +30,19 @@
 			novel_title
 	</select>
 	
+	<select id="novelListByid" resultType="com.home.first.dto.NovelProfileDto" parameterType="hashmap">
+		SELECT
+			*
+		FROM
+			profilenovel
+		WHERE
+			novel_id = #{novel_id}
+		GROUP BY
+			novel_title
+		ORDER BY
+			novel_title_idx DESC limit #{offset}, #{noOfRecords}
+	</select>
+	
 	<select id="novelListByViForHit" resultType="com.home.first.dto.NovelDto" parameterType="hashmap">
 		SELECT
 			novel_idx,
@@ -186,6 +199,15 @@
 	</update>
 	
 	<update id="updateForProVi" parameterType="hashmap">
+		UPDATE
+			profilenovel
+		SET
+			novel_visibility = #{novel_visibility}
+		WHERE
+			novel_id = #{novel_id} AND novel_title = #{novel_title}
+	</update>
+	
+	<update id="updateProfile" parameterType="com.home.first.dto.NovelProfileDto">
 		UPDATE
 			profilenovel
 		SET

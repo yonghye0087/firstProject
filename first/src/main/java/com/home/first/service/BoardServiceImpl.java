@@ -23,8 +23,8 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Override
 	public void regist(BoardDto board,  HttpSession session) throws Exception {
-		String id = (String) session.getAttribute("LoginID");
-		board.setId(id);
+		String user_id = (String) session.getAttribute("LoginID");
+		board.setUser_id(user_id);
 		logger.info(board.toString());
 		boardDao.create(board);
 	}

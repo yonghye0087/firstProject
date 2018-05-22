@@ -6,7 +6,7 @@ public class BoardDto {
 	private int board_idx;
 	private String board_title;
 	private String board_content;
-	private String id;
+	private String user_id;
 	private int board_hit;
 	private Date board_date;
 	private String board_category;
@@ -29,11 +29,11 @@ public class BoardDto {
 	public void setBoard_content(String board_content) {
 		this.board_content = board_content;
 	}
-	public String getId() {
-		return id;
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 	public int getBoard_hit() {
 		return board_hit;
@@ -62,7 +62,8 @@ public class BoardDto {
 	@Override
 	public String toString() {
 		return "BoardDto [board_idx=" + board_idx + ", board_title=" + board_title + ", board_content=" + board_content
-				+ ", id=" + id + ", board_hit=" + board_hit + ", board_date=" + board_date + ", board_category="
-				+ board_category + ", board_link=" + board_link + "]";
+				+ ", user_id=" + user_id + ", board_hit=" + board_hit + ", board_date=" + board_date
+				+ ", board_category=" + board_category + ", board_link=" + board_link + "]";
 	}
+	
 }

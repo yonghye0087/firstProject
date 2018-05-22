@@ -4,12 +4,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.home.first.dao.UserDao;
 import com.home.first.dto.UserDto;
-import com.sun.media.jfxmedia.logging.Logger;
 
 @Service
 public class UserServiceImpl implements UserService {	
@@ -19,11 +16,11 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public boolean create(UserDto UserDto) throws Exception {
-		UserDto UserDtoCheck = userDao.read(UserDto.getId());
-		System.out.println(UserDtoCheck.toString());
+		UserDto UserDtoCheck = userDao.read(UserDto.getUser_id());
 		boolean result = false;
-		if(UserDtoCheck.equals(null)) {
-			result = userDao.create(UserDto);
+		if(UserDtoCheck == null || UserDtoCheck.equals(null)) {
+			userDao.create(UserDto);
+			result = true;
 		}
 		return result;		
 	}
@@ -46,10 +43,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public boolean login(UserDto UserDto) throws Exception {				 
-		String LoginID = UserDto.getId();
-		String LoginPW = UserDto.getPw();
-		String UserID = userDao.read(LoginID).getId();
-		String UserPW = userDao.read(LoginID).getPw();
+		String LoginID = UserDto.getUser_id();
+		String LoginPW = UserDto.getUser_pw();
+		String UserID = userDao.read(LoginID).getUser_id();
+		String UserPW = userDao.read(LoginID).getUser_pw();
 		boolean resultLogin = false;
 		System.out.println(resultLogin);
 		if(LoginID.equals(UserID)) {

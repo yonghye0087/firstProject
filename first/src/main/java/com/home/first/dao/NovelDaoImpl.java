@@ -121,7 +121,7 @@ public class NovelDaoImpl implements NovelDao {
 	}
 
 	@Override
-	public NovelProfileDto read(String novel_id, String novel_title) throws Exception {
+	public NovelProfileDto readProfile(String novel_id, String novel_title) throws Exception {
 		//소설의 프로필을 읽어들인다.
 		logger.info(novel_id+" : "+novel_title);
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -156,6 +156,22 @@ public class NovelDaoImpl implements NovelDao {
 		params.put("offset", offset);
 		params.put("noOfRecords", noOfRecords);
 		return sqlSession.selectList(NS+".novelByVi", params);
+	}
+
+	@Override
+	public List<NovelProfileDto> novelProfileList(int offset, int noOfRecords, String novel_id) throws Exception {
+		// 아이디로 검색해 소설의 프로필 리스트를 읽는 기능
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("offset", offset);
+		params.put("noOfRecords", noOfRecords);
+		params.put("novel_id", novel_id);
+		return sqlSession.selectList(NS+".novelListByid", params);
+	}
+
+	@Override
+	public boolean profileModity(String novel_title, String novel_nickname) throws Exception {
+		// 개인 프로필을 수정하는 기능
+		return false;
 	}
 
 	

@@ -1,7 +1,5 @@
 package com.home.first.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,7 +27,6 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public List<CommentDto> commentRead(Integer board_idx) throws Exception {
 		logger.info(board_idx.toString());
-		List<CommentDto> commentList = commentDao.commentRead(board_idx);
 		return commentDao.commentRead(board_idx);
 	}
 

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class CommentDto {
 	private int comment_idx;
 	private int board_idx;
-	private String id;
+	private String user_id;
 	private String comment_content;
 	
 	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss")
@@ -26,10 +26,10 @@ public class CommentDto {
 		this.board_idx = board_idx;
 	}
 	public String getId() {
-		return id;
+		return user_id;
 	}
 	public void setId(String id) {
-		this.id = id;
+		this.user_id = id;
 	}
 	public String getComment_content() {
 		return comment_content;
@@ -45,7 +45,7 @@ public class CommentDto {
 	}
 	@Override
 	public String toString() {
-		return "CommentDto [comment_idx=" + comment_idx + ", board_idx=" + board_idx + ", id=" + id
+		return "CommentDto [comment_idx=" + comment_idx + ", board_idx=" + board_idx + ", id=" + user_id
 				+ ", comment_content=" + comment_content + ", comment_date=" + comment_date + "]";
 	}
 }

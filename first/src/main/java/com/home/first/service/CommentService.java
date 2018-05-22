@@ -2,8 +2,6 @@ package com.home.first.service;
 
 import java.util.List;
 
-import org.json.simple.JSONObject;
-
 import com.home.first.dto.CommentDto;
 
 public interface CommentService {

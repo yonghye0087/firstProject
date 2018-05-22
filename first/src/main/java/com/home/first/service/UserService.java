@@ -2,9 +2,6 @@ package com.home.first.service;
 
 import java.util.List;
 
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.home.first.dto.UserDto;
 
 public interface UserService {

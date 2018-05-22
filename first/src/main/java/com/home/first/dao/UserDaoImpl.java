@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public UserDto read(String id) throws Exception {		
+	public UserDto read(String id) throws Exception {
 		return sqlSession.selectOne(NS+".readUser", id);	
 	}
 

@@ -35,9 +35,15 @@ public class NovelController {
 	
 	@RequestMapping(value = "/novel", method = RequestMethod.GET)
 	public String readNovel(Model model, HttpServletRequest req, HttpSession session) throws Exception{
-		logger.info("readNovel GET");
+		//로그인시 자기 소설 화면으로 이동하는 기능입니다.
+		
+		logger.info("GET방식으로 메인페이지/상단바에서 내 소설 화면으로 이동합니다.");
+		
+		//세션에서 아이디 정보를 읽는 부분
 		String loginID = session.getAttribute("LoginID").toString();
 		logger.info(loginID);
+		
+		//페이징 처리 부분
 		int currentPageNo = 1;
 		int maxPost = 10;
 		
@@ -48,31 +54,41 @@ public class NovelController {
 		
 		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 		
-		ArrayList<NovelDto> page = new ArrayList<NovelDto>();
-		page = (ArrayList<NovelDto>) NService.readListByTl(offset, paging.getMaxPost(),loginID);
+		ArrayList<NovelProfileDto> page = new ArrayList<NovelProfileDto>();
+		page = (ArrayList<NovelProfileDto>) NService.readNovelProfile(offset, paging.getMaxPost(),loginID);
 		paging.setNumberOfRecords(NService.countForList());
 		
 		paging.makePaging();
 		
-		for(NovelDto N : page) {
-			String novel_title = N.getNovel_title();
-			int  hitCount = NService.readHitSum(novel_title, loginID);
-			N.setNovel_hit(hitCount);
-		}
+	
+		//페이징 처리한 정보를 모델에 담는 부분
 		model.addAttribute("page", page);
 		model.addAttribute("paging", paging);
+		
 		logger.info(model.toString());
 		
-		return "/Novel/novelBoard";
+		//리턴할 주소
+		return "/Novel/NovelBoard";
 	}
 	@RequestMapping(value = "/novelByTl", method = RequestMethod.GET)
-	public String readNovelByTl(@RequestParam("novel_title") String novel_title, Model model, HttpServletRequest req, HttpSession session) throws Exception {
-		logger.info("readNovelByTl GET");
+	public String readNovelByTl(@RequestParam("novel_title") String novel_title,@RequestParam("novel_id") String novel_id, Model model, HttpServletRequest req, HttpSession session) throws Exception {
+		//내 소설 화면에서 개별 타이틀로 이동시키는 기능
+		
+		logger.info("GET방식으로 내 소설화면에서 개별 타이틀 화면으로 이동합니다.");
 		logger.info(novel_title);
+		logger.info(novel_id);
 		
 		String loginID = session.getAttribute("LoginID").toString();
-		logger.info(loginID);
+		String novel_id2 = null;
+		if(novel_id.equals(loginID)) {
+			novel_id2 = loginID;
+		} else {
+			novel_id2 = novel_id;
+		}
 		
+		logger.info(novel_id2);
+		
+		//페이징 처리 부분
 		int currentPageNo = 1;
 		int maxPost = 10;
 		
@@ -84,24 +100,28 @@ public class NovelController {
 		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 		
 		ArrayList<NovelDto> page = new ArrayList<NovelDto>();
-		page = (ArrayList<NovelDto>) NService.readNovelByTl(offset, paging.getMaxPost(),novel_title,loginID);
+		page = (ArrayList<NovelDto>) NService.readNovelByTl(offset, paging.getMaxPost(),novel_title,novel_id2);
 		paging.setNumberOfRecords(NService.countByCh(novel_title));
+		logger.info(page.toString());
 		
-		for(NovelDto N : page) {
-			int NV = N.getNovel_visibility();
-			model.addAttribute("novel_visibility", NV);
-		}
+		
 		paging.makePaging();
 		
+		//페이징 처리한 화면을 모델에 담는 부분
 		model.addAttribute("title", novel_title);
 		model.addAttribute("page", page);
 		model.addAttribute("paging", paging);
 		logger.info(model.toString());
-		return "/Novel/novelBoardCh";
+		
+		//리턴할 주소
+		return "/Novel/NovelBoardCh";
 	}
 	@RequestMapping(value="/novelContent", method = RequestMethod.GET)
 	public String novelContent(@RequestParam("novel_idx")int novel_idx, Model model, HttpServletRequest req, HttpSession session) throws Exception {
-		logger.info("novelContent");
+		//개별타이틀 화면에서 개별 글화면으로 이동하는 기능입니다.
+		
+		logger.info("GET방식으로 개별타이틀 화면에서 개별 글 화면으로 이동합니다.");
+		
 		NovelDto novelContent = NService.read(novel_idx);
 		String novel_title = novelContent.getNovel_title();
 		logger.info("readNovelByTl GET");
@@ -110,6 +130,7 @@ public class NovelController {
 		String loginID = session.getAttribute("LoginID").toString();
 		logger.info(loginID);
 		
+		//페이징 처리부분
 		int currentPageNo = 1;
 		int maxPost = 10;
 		
@@ -125,29 +146,41 @@ public class NovelController {
 		paging.setNumberOfRecords(NService.countByCh(novel_title));
 		
 		paging.makePaging();
+		
+		//페이징 처리한 정보를 모델에 담는 부분
 		model.addAttribute("page", page);
 		model.addAttribute("paging", paging);
 		model.addAttribute("novelContent", novelContent);
 		
-		return "/Novel/novelContent";
+		//리턴할 주소
+		return "/Novel/NovelContent";
 	}
 	@RequestMapping(value="/novelWrite", method = RequestMethod.GET)
 	public String novelWrite(@RequestParam("novel_title") String novel_title, Model model, HttpSession session) throws Exception{
-		if(!novel_title.equals(null)) {
+		//개별 타이틀 화면에서 소설 작성 화면으로 이동하는 기능
+		logger.info("GET방식으로 개별 타이틀 화면에서 소설 작성 화면으로 이동합니다.");
+		logger.info(novel_title);
+		//작성하려는 소설 타이틀이 존재하는 확인하는 부분.
+		if(!novel_title.equals(null) || !novel_title.equals("undefined")) {
 			int chapter = NService.countByCh(novel_title);
 			model.addAttribute("novel_title", novel_title);
 			model.addAttribute("chapter", chapter);
+			logger.info(model.toString());
 		}
 		String loginID = session.getAttribute("LoginID").toString();
 		List<NovelDto> novelList = NService.readListByTl(0, 100, loginID);
-		
+		//모델에 반환값을 담는 부분
 		model.addAttribute("novelList", novelList);
-		return "/Novel/novelWrite";
+		logger.info(model.toString());
+		//소설 작성 화면으로 리턴합니다.
+		return "/Novel/NovelWrite";
 	}
 	
 	@RequestMapping(value="/novelWrite", method = RequestMethod.POST)
 	public String novelWrite(NovelDto novelDto) throws Exception{
-		logger.info("novelWrite POST");
+		//소설작성 화면에서 DB로 값을 이동시키는 기능
+		
+		logger.info("POST방식으로 소설작성화면에서 DB로 값을 저장합니다.");
 		logger.info(novelDto.toString());
 		int chapterCount = 0;
 		String title = URLEncoder.encode(novelDto.getNovel_title(), "UTF-8");
@@ -156,13 +189,17 @@ public class NovelController {
 			novelDto.setNovel_chapter(chapterCount+1);
 			NService.createNovel(novelDto);
 		}
-		return "redirect:/novelByTl?novel_title="+title;
+		String novel_id = novelDto.getNovel_id();
+		//작성된 타이틀 화면으로 리다이렉트 합니다.
+		return "redirect:/novelByTl?novel_title="+title+"&&novel_id="+novel_id;
 	}
 	
 	@RequestMapping(value="/serialNovelBoard", method = RequestMethod.GET)
 	public String serialNovelBoard(HttpServletRequest req, Model model) throws Exception {
-		logger.info("serialNovelList GET");
-		//페이징
+		//일반공개소설화면으로 이동하는 기능입니다.
+		logger.info("GET방식으로 메인페이지에서 일반소설화면으로 이동합니다.");
+		
+		//페이징 부분
 		int currentPageNo = 1;
 		int maxPost = 10;
 		
@@ -179,111 +216,91 @@ public class NovelController {
 		
 		paging.makePaging();
 		
+		//모델 처리 부분
 		model.addAttribute("paging", paging);
 		model.addAttribute("page", page);
 		
-		return "/Novel/serialNovelBoard";
+		//리턴부분
+		return "/Novel/NovelSerialBoard";
 	}
 	
 	@RequestMapping(value="/serialNovelList", method = RequestMethod.POST)
 	@ResponseBody
 	public List<NovelProfileDto> serialNovelList() throws Exception {
-		logger.info("serialNovelList POST");
+		//일반소설화면에서 Ajax통신을 이용해 소설정보를 가져가는 기능입니다.
+		
+		logger.info("POST방식과 Ajax통신을 이용해 일반소설화면에 DB의 정보를 가져옵니다.");
+		
+		//Ajax통신으로 소설 정보를 리턴합니다.
 		return NService.readNovel();
 	}
-	@RequestMapping(value="/profileNovel", method = RequestMethod.POST)
+	@RequestMapping(value="/novelProfile", method = RequestMethod.POST)
 	@ResponseBody
-	public NovelProfileDto profileNovel(@RequestParam("novel_id") String novel_id, @RequestParam("novel_title") String novel_title, @RequestParam("novel_visibility") int novel_visibility) throws Exception{
-		logger.info("profileNovel POST");
-		logger.info(novel_id +" : "+ novel_title+" : "+novel_visibility);
-		NovelProfileDto DBDto = NService.read(novel_id, novel_title);
+	public NovelProfileDto profileNovel(@RequestParam("novel_id") String novel_id, @RequestParam("novel_title") String novel_title) throws Exception{
+		//Ajax통신으로 소설의 프로필을 가져오는 기능입니다.
+		
+		logger.info("POST방식과 Ajax통신을 이용해 소설프로필 모듈에 DB의 정보를 가져옵니다.");
+		
+		logger.info(novel_id +" : "+ novel_title);
+		
+		NovelProfileDto DBDto = NService.readProfile(novel_id, novel_title);
 		
 		if(DBDto == null) {
 			logger.info("profileNovel null");
 			NovelProfileDto nullDto = new NovelProfileDto();
 			DBDto = nullDto;
 		}
-		
+		//Ajax통신으로 리턴
 		return DBDto;
 	}
 	
-	@RequestMapping(value="/profileModifyForFile", method = RequestMethod.POST)
-	@ResponseBody
-	public String profileModify(@RequestParam("novel_title") String novel_title,@RequestParam("novel_nickname") String novel_nickname ,@RequestParam("novel_file") MultipartFile novel_file, HttpSession session ) throws Exception {
-		logger.info("profileModify POST");
-		String title = URLEncoder.encode(novel_title, "UTF-8");
-		if(novel_file != null) {
-			//중복되는 파일 이름 변경하기1
-			String originalName = novel_file.getOriginalFilename();
-			int nameLength = originalName.length();
-			int extSub = originalName.lastIndexOf(".");
-			String ext = originalName.substring(extSub+1, nameLength);
-			String fileName = originalName.substring(0, extSub);
-			
-			//오늘날짜 구해서 파일 사이에 넣기
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-	        Calendar c1 = Calendar.getInstance();
-	        String strToday = sdf.format(c1.getTime());
-			String newFileName = fileName+strToday+"."+ext;
-			NovelProfileDto NPDto = new NovelProfileDto();
-			
-			//파일 크기
-			int fileSize = originalName.length();
-			
-			//파일 경로에 저장하기
-			String uploadPath = "F:\\WorkSpace\\firstProject\\first\\src\\main\\webapp\\resources\\ImageFile\\";
-			novel_file.transferTo(new File(uploadPath + newFileName));
-			
-			//확인
-			logger.info(originalName);
-			logger.info(fileName +" "+strToday+" . "+ext);
-			logger.info(newFileName);
-			logger.info(Integer.toString(fileSize));
-			
-			//객체에 값 대입하기
-			NPDto.setNovel_nickname(novel_nickname);
-			NPDto.setNovel_title(novel_title);
-			NPDto.setNovel_id(session.getAttribute("LoginID").toString());
-			NPDto.setNovel_img_name(newFileName);
-			NPDto.setNovel_img_size(fileSize);
-			
-			NService.create(NPDto);
-		}
-		return "redirect:/Novel/novelByTl?novel_title="+title;
+	@RequestMapping(value="/profileModify", method = RequestMethod.POST)
+	public String profileModify(NovelProfileDto novelProfileDto, MultipartFile novel_file, HttpSession session ) throws Exception {
+		//Ajax 통신을 이용해 소설프로필의 정보를 수정하는 기능입니다.
+		
+		logger.info("POST방식과 Ajax통신을 이용하여 소설프로필 모듈의 정보를 수정합니다.");
+		logger.info(novelProfileDto.toString());
+		
+		//필요한 정보 불러오기
+		NovelProfileDto modifyProfileList = NService.readProfile(novelProfileDto.getNovel_id(), novelProfileDto.getNovel_title());
+		logger.info(modifyProfileList.toString());
+		
+		
+		return null;
 	}
+	
 	@RequestMapping(value="/selectVisibility", method = RequestMethod.POST)
 	@ResponseBody
 	public void selectVisibility(@RequestParam("novel_visibility") int novel_visibility, @RequestParam("novel_title") String novel_title, HttpSession session) throws Exception {
-		logger.info("selectVisibility POST");
+		//일반소설화면에서 선택된 소설을 불러들이는 기능
+		
+		logger.info("POST방식으로 내가 작성한 소설의 공개여부를 변경합니다.");
 		logger.info(Integer.toString(novel_visibility));
 		logger.info(novel_title);
 		String loginID = session.getAttribute("LoginID").toString();
 		logger.info(loginID);
 		NService.updateForVi(novel_title, novel_visibility, loginID);
 	}
+	
 	@RequestMapping(value="/novelProFileCreate", method = RequestMethod.GET)
 	public String novelProFileCreate() throws Exception {
-		logger.info("novelProFileCreate GET");
-		return "/Novel/novelProFileCreate";
-	}
-	@RequestMapping(value="/novelProFileCreate", method = RequestMethod.POST)
-	@ResponseBody
-	public String novelProFileCreate(@RequestParam("novel_title") String novelTitle, 
-										@RequestParam("novel_visibility") int novelVisibility, 
-										@RequestParam("novel_file") MultipartFile novelFile,
-										@RequestParam("novel_nickname") String novelNickname,
-										HttpSession session) throws Exception {
-		logger.info("NovelProfileDto POST");
-		logger.info(novelFile.getOriginalFilename());
-		logger.info(Integer.toString(novelVisibility));
-		logger.info(novelTitle);
-		logger.info(novelNickname);
+		//소설 프로필 모듈에서 소설프로필을 만드는 기능
 		
-		//선언부
+		logger.info("GET방식으로 소설의 프로필 화면으로 리다이렉트 합니다.");
+		
+		//소설 프로필 모듈로 리다이렉트
+		return "/Novel/NovelProFileCreate";
+	}
+	@RequestMapping(value="/createNovel", method = RequestMethod.POST)
+	public String createNovel(NovelProfileDto novelProfileDto, @RequestParam("novel_file") MultipartFile novelFile, HttpSession session) throws Exception {
+		//소설프로필 화면에서 기입된 정보들을 디비에 저장하는 기능
+		logger.info("POST방식으로 소설의 프로필 화면에서 DB로 정보를 저장합니다.");
+		logger.info(novelFile.getOriginalFilename());
+		logger.info(novelProfileDto.toString());
+		
+		//선언부분
 		String novel_id = session.getAttribute("LoginID").toString();
-		String novel_title = novelTitle;
-		String novel_nickname = novelNickname;
-		int novel_visibility = novelVisibility;
+		
 		//파일이름 변경
 		String originalName = novelFile.getOriginalFilename();
 		int nameLength = originalName.length();
@@ -299,41 +316,41 @@ public class NovelController {
 		
 		//파일 크기
 		int fileSize = originalName.length();
-		int checkNum = NService.countByCh(novel_title);
+		
+		int checkNum = NService.countByCh(novelProfileDto.getNovel_title());
 		if(checkNum == 0) {
 			//적용부
-			NovelProfileDto novelProfileDto = new NovelProfileDto();
 			try {
 				novelProfileDto.setNovel_id(novel_id);
-				novelProfileDto.setNovel_nickname(novel_nickname);
-				novelProfileDto.setNovel_title(novel_title);
-				novelProfileDto.setNovel_visibility(novel_visibility);
 				novelProfileDto.setNovel_img_name(newFileName);
 				novelProfileDto.setNovel_img_size(fileSize);
 				logger.info(novelProfileDto.toString());
 				NService.create(novelProfileDto);
-				NovelProfileDto check2 = NService.read(novel_id, novel_title);
+				NovelProfileDto check2 = NService.readProfile(novel_id, novelProfileDto.getNovel_title());
 				if(novelProfileDto.getNovel_title().equals(check2.getNovel_title()) || novelProfileDto.getNovel_title() == check2.getNovel_title()) {
 					String uploadPath = "F:\\WorkSpace\\firstProject\\first\\src\\main\\webapp\\resources\\ImageFile\\";
 					novelFile.transferTo(new File(uploadPath + newFileName));
+						
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
+			} finally {
+				
 			}
 		}
-		
-		return "redirect:/novelByTl?novel_title="+novel_title;
+		return "redirect:/novelByTl?novel_title="+novelProfileDto.getNovel_title();
 	}
 	
 	@RequestMapping(value="/serialNovel", method =  {RequestMethod.GET, RequestMethod.POST})
 	public String serialNovel(NovelProfileDto novelProfileDto, Model model, HttpServletRequest req) throws Exception {
-		logger.info("serialNovel POST");
+		//일반 소설화면에서 개별 화면으로 이동하는 기능
+		logger.info("POST방식으로 개별 일반 소설로 이동합니다.");
 		logger.info(novelProfileDto.toString());
 		String novel_id = novelProfileDto.getNovel_id();
 		String novel_title = novelProfileDto.getNovel_title();
-		NovelProfileDto profileList =  NService.read(novel_id, novel_title);
+		NovelProfileDto profileList =  NService.readProfile(novel_id, novel_title);
 		
-		//페이징
+		//페이징 부분
 		int currentPageNo = 1;
 		int maxPost = 10;
 		
@@ -350,10 +367,12 @@ public class NovelController {
 		
 		paging.makePaging();
 		
+		//모델 저장 부분
 		model.addAttribute("paging", paging);
 		model.addAttribute("profileList", profileList);
 		model.addAttribute("page", page);
 		
-		return "/Novel/serialNovelList";
+		//리턴 부분
+		return "/Novel/NovelSerialList";
 	}
 }

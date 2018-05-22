@@ -4,11 +4,11 @@
 	<insert id="commentCreate" parameterType="com.home.first.dto.CommentDto">
 		INSERT INTO comment(
 			board_idx, 
-			id, 
+			user_id, 
 			comment_content
 		)VALUES(
 			#{board_idx},
-			#{id},
+			#{user_id},
 			#{comment_content}
 		)
 	</insert>
@@ -32,7 +32,7 @@
 			comment_idx,
 			board_idx,
 			comment_content,
-			id,
+			user_id,
 			comment_date
 		FROM
 			comment
@@ -46,7 +46,7 @@
 			comment_idx,
 			board_idx,
 			comment_content,
-			id,
+			user_id,
 			comment_date
 		FROM
 			comment

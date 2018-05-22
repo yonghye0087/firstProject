@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.home.first.mapper.boardMapper">
 	<insert id="create" parameterType="com.home.first.dto.BoardDto">
-		INSERT INTO sample(
+		INSERT INTO board(
 			board_title, 
 			board_content, 
-			id, 
+			user_id, 
 			board_category,
 			board_link
 		)VALUES(
 			#{board_title}, 
 			#{board_content}, 
-			#{id}, 		
+			#{user_id}, 		
 			#{board_category},
 			#{board_link}	
 		)
@@ -21,19 +21,19 @@
 			board_idx,
 			board_title,
 			board_content,
-			id,
+			user_id,
 			board_hit,
 			board_date,
 			board_category,
 			board_link
 		FROM
-			sample
+			board
 		WHERE
 			board_idx = #{board_idx}
 	</select>
 	<update id="update" parameterType="com.home.first.dto.BoardDto">
 		UPDATE
-			sample
+			board
 		SET
 			board_title = #{board_title},
 			board_content = #{board_content},
@@ -44,7 +44,7 @@
 	</update>
 	<update id="updateHit" parameterType="com.home.first.dto.BoardDto">
 		UPDATE
-			sample
+			board
 		SET
 			board_hit = board_hit + 1
 		WHERE
@@ -52,7 +52,7 @@
 	</update>
 	<delete id="delete">
 		DELETE FROM 
-			sample
+			board
 		WHERE 
 			board_idx = #{board_idx}
 	</delete>
@@ -61,13 +61,13 @@
 			board_idx,
 			board_title,
 			board_content,
-			id,
+			user_id,
 			board_hit,
 			board_date,
 			board_category,
 			board_link
 		FROM 
-			sample
+			board
 	</select>
 	<select id="currentTime" resultType="String">
 		SELECT now()
@@ -76,13 +76,13 @@
 		SELECT 
 			count(*)
 		FROM
-			sample;	
+			board;	
 		</select>
 		<select id="boardListByDesc" resultType="com.home.first.dto.BoardDto" parameterType="hashmap">
 		SELECT
 			*
 		FROM
-			sample
+			board
 		ORDER BY
 			board_idx DESC limit #{offset}, #{noOfRecords}
 	</select>
@@ -90,7 +90,7 @@
         SELECT
 			* 
 		FROM
-			sample 
+			board 
 		WHERE 
 			info = 1 
 		ORDER BY 
