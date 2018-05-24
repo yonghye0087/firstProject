@@ -71,6 +71,7 @@
 						profileOut += '<div class="well well-sm" id="profileBox2">'
 						profileOut += '<form action="profileModify" name="modifyForm" method="post" enctype="multipart/form-data">'
 						profileOut += '<input type="file" name="novel_file">'
+						profileOut += '<input type="hidden" name="novel_title_idx" value="'+data.novel_title_idx+'">'
 						profileOut += '<label for="title">Novel Title</label>'
 						profileOut += '<input type="text" name="novel_title" value="${title}">'
 						profileOut += '<input type="hidden" name="novel_id" value="'+NovelI+'">'
@@ -102,7 +103,6 @@
 				}
 			},
 			error: function(){
-				alert("error shit!")
 			}
 			
 		});	

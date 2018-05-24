@@ -53,5 +53,5 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		model.addAttribute("guestList", guestList);
 		model.addAttribute("novelList", novelList);
 		return "/MainPage";
-	}	
+	}
 }

@@ -11,20 +11,32 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style type="text/css">
-    /* Remove the navbar's default margin-bottom and rounded borders */ 
-    .navbar {
-      margin-bottom: 0;
-      border-radius: 0; 
-    }
+   .MainContainer{
+	width: 70%;
+	text-align: left; 
+	padding: 0px;
+	left: 15px;
+	}
+	
+	/* Remove the navbar's default margin-bottom and rounded borders */ 
+  	.navbar {
+  	  margin-top: 15px;
+  	  margin-left: 15px;
+  	  margin-right: 15px;
+  	  background-color: #000000;
+      border-radius: 5px;
+	}
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 850px}
+    .row.content {height: 750px; margin: 0px;}
     
     /* Set gray background color and 100% height */
     .sidenav {
-      padding-top: 20px;
+      padding: 15px;
       background-color: #f1f1f1;
       height: 100%;
+      width: 15%;
+      border-radius: 5px;
     }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
@@ -46,7 +58,7 @@
     }
     .well{
     	height: 200px;
-    	width: 100%;
+    	width: 98%;
     }
   </style>
   <script type="text/javascript" language="javascript">  
@@ -73,7 +85,7 @@
 	  <div class="row content">
 	    <div class="col-sm-2 sidenav">
 	    </div>
-	    <div class="col-sm-8 text-left"> 
+	    <div class="col-sm-8 MainContainer"> 
 	    	<h1>${profileList.novel_title}</h1>
 	    	<input type="hidden" id="noveltitle" value="${profileList.novel_title}">	
 	    	<div class="well">

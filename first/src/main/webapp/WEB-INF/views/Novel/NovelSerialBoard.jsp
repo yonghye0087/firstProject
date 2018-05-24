@@ -77,32 +77,32 @@
   </style>
   <script type="text/javascript">
   	$(document).ready(function(){
-  		var imageName;
+  		var imageName = null;
   		$.ajax({
-  			type: "POST",
-  			url: "/serialNovelList",
-  			dataType : "json",
+  			type: "get",
+  			url: "serialList",
+  			data: {"Vi_idx" : 1},
   			success: function(data){
   				if(data.length > 0){
-  				var output = '';
-  	  				$.each(data, function(index, item){
-  	  					console.log(item);
-  	  					imageName = item.novel_img_name;
-  	  					output += '<a href="#" onclick="serialNovel('+index+')">'
-  	  					output += '<div class="well well-sm" id="listbox">'
-  	  					output += '<img alt="'+imageName+'" width="140px" height="140px" src="<c:url value="/resources/ImageFile/'+imageName+'"/>">'
-  	  					output += '<div name="title'+index+'">'+item.novel_title+'</div>'
-  	  					output += '<div name="nickname'+index+'">'+item.novel_nickname+'</div>'
-  	  					output += '<input type="hidden" name="novel_id'+index+'" value="'+item.novel_id+'"></div></a>'
-  	  					
-  	  	  	  		});
-  	  	  	  		$('#novelList').append(output);
-  				}
+  	  				var output = '';
+  	  	  				$.each(data, function(index, item){
+  	  	  					console.log(item);
+  	  	  					imageName = item.novel_img_name;
+  	  	  					output += '<a href="#" onclick="serialNovel('+index+')">'
+  	  	  					output += '<div class="well well-sm" id="listbox">'
+  	  	  					output += '<img alt="'+imageName+'" width="140px" height="140px" src="<c:url value="/resources/ImageFile/'+imageName+'"/>">'
+  	  	  					output += '<div name="title'+index+'">'+item.novel_title+'</div>'
+  	  	  					output += '<div name="nickname'+index+'">'+item.novel_nickname+'</div>'
+  	  	  					output += '<input type="hidden" name="novel_id'+index+'" value="'+item.novel_id+'"></div></a>'
+  	  	  					
+  	  	  	  	  		});
+  	  	  	  	  		$('#novelList').append(output);
+  	  				}
   			},
-  			error:function(request,status,error){
-  		        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-  		    }
-	  	});
+  			error: function(){
+  				console.log("2")
+  			}
+  		});
   	});
   	function serialNovel(index){
   		let novel_title = $('div[name=title'+index+']').text();
@@ -111,7 +111,7 @@
   		
   		var form = document.createElement("form");
   		form.setAttribute('method', 'post');
-  		form.setAttribute('action', "/serialNovel");
+  		form.setAttribute('action', "serialNovel");
 			var hiddenField = document.createElement("input");
 				hiddenField.setAttribute('type', 'hidden');
 				hiddenField.setAttribute('name', 'novel_title');
@@ -120,7 +120,8 @@
 				hiddenField2.setAttribute('type', 'hidden');
 				hiddenField2.setAttribute('name', 'novel_id');
 				hiddenField2.setAttribute('value', novel_id);
-		console.log(hiddenField)
+		console.log(hiddenField);
+		console.log(hiddenField2);
 		form.appendChild(hiddenField);
 		form.appendChild(hiddenField2);
 		document.body.appendChild(form);
@@ -148,9 +149,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="list" items="${page}">
+					<c:forEach var="list" items="${page}" varStatus="status">
 					<tr>
-						<td class="col-md-1" style="text-align: center;">${list.novel_chapter}</td>
+						<td class="col-md-1" style="text-align: center;">${status.count}</td>
 						<td class="col-md-5" style="text-align: center;"><a href="novelByTl?novel_title=${list.novel_title}&&novel_id=${list.novel_id}">${list.novel_title}</a></td>
 						<td class="col-md-2" style="text-align: center;">${list.novel_id}</td>
 						<td class="col-md-2" style="text-align: center;">${list.novel_hit}</td>

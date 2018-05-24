@@ -98,7 +98,7 @@
 					<c:forEach var="list" items="${page}">
 					<tr>
 						<td class="col-md-1" style="text-align: center;">${list.novel_chapter}</td>
-						<td class="col-md-5" style="text-align: center;"><a href="novelContent?novel_idx=${list.novel_idx}">${list.novel_subtitle}</a></td>
+						<td class="col-md-5" style="text-align: center;"><a href="novelContent?novel_idx=${list.novel_idx}&&novel_id=${list.novel_id}">${list.novel_subtitle}</a></td>
 						<td class="col-md-2" style="text-align: center;">${list.novel_id}</td>
 						<td class="col-md-2" style="text-align: center;">${list.novel_hit}</td>
 						<td class="col-md-2" style="text-align: center;"><fmt:formatDate value="${list.novel_date}" pattern="YYYY-MM-dd"/></td>

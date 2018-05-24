@@ -136,9 +136,15 @@ public class NovelServiceImpl implements NovelService{
 	}
 
 	@Override
-	public void profileModity(String title, String nickname) throws Exception {
+	public boolean profileModity(NovelProfileDto novelProfileDto) throws Exception {
 		// 개인 프로필을 수정하는 기능
-		
+		return novelDao.profileModity(novelProfileDto);
+	}
+
+	@Override
+	public NovelProfileDto readProfileByMo(int novel_title_idx) throws Exception {
+		// 소설의 프로필을 번호로 읽어들이는 기능
+		return novelDao.readProfileByMo(novel_title_idx);
 	}
 
 	

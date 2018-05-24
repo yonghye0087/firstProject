@@ -44,11 +44,10 @@
     	/* width: 100px; */
     }
   </style>
-  <script type="text/javascript" src="<c:url value="/resources/se2/js/service/HuskyEZCreator.js"/>" charset="utf-8"></script>
+<script type="text/javascript" src="<c:url value="/resources/se2/js/service/HuskyEZCreator.js"/>" charset="utf-8"></script>
 </head>
 <body>
 	<%@include file="..//Module/Navbar.jsp"%>
-	  
 	<div class="container-fluid text-center">    
 	  <div class="row content">
 	    <div class="col-sm-2 sidenav">
@@ -86,7 +85,7 @@
 						</div>	
 						
 						<div class="form-group">
-							<textarea class="form-control" name="novel_content" id="ir1" rows="20" cols="100%"></textarea>
+							<textarea class="form-control" name="novel_content" id="content_editer" rows="20" cols="100%"></textarea>
 						</div>
 						
 						<div class="form-group">
@@ -119,7 +118,7 @@
 	var oEditors = [];								
 	nhn.husky.EZCreator.createInIFrame({								
 	    oAppRef: oEditors,								
-	    elPlaceHolder: "ir1",								
+	    elPlaceHolder: "content_editer",								
 	    sSkinURI: "./resources/se2/SmartEditor2Skin.html",								
 	    fCreator: "createSEditor2"								
 	});
@@ -144,9 +143,9 @@
 	});
 	
 	$('#btn').click(function(){
-	    oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
+	    oEditors.getById["content_editer"].exec("UPDATE_CONTENTS_FIELD", []);
 
-	    console.log(document.getElementById("ir1").value);
+	    console.log(document.getElementById("content_editer").value);
 
 	    try {
 	        elClickedObj.form.submit();

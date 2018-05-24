@@ -169,9 +169,21 @@ public class NovelDaoImpl implements NovelDao {
 	}
 
 	@Override
-	public boolean profileModity(String novel_title, String novel_nickname) throws Exception {
+	public boolean profileModity(NovelProfileDto novelProfileDto) throws Exception {
 		// 개인 프로필을 수정하는 기능
-		return false;
+		int result = sqlSession.update(NS+".updateProfileByMo", novelProfileDto);
+		logger.info(Integer.toString(result));
+		boolean resultSet = false;
+		if(result == 1) {
+			resultSet = true;
+		}
+		return resultSet;
+	}
+
+	@Override
+	public NovelProfileDto readProfileByMo(int novel_title_idx) throws Exception {
+		// 개인 프로필을 번호로 읽는 기능
+		return sqlSession.selectOne(NS+".novelProfileByMo", novel_title_idx);
 	}
 
 	

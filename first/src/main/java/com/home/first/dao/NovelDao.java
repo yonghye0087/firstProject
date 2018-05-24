@@ -34,6 +34,8 @@ public interface NovelDao {
 	public List<NovelProfileDto> novelProfileList(int offset, int noOfRecords, String novel_id) throws Exception;
 	//소설의 프로필을 읽어들인다.
 	public NovelProfileDto readProfile(String novel_id, String novel_title) throws Exception;
+	//소설의 프로필을 번호로 읽어들인다.
+	public NovelProfileDto readProfileByMo(int novel_title_idx) throws Exception;
 	//소설의 프로필을 저장한다
 	public void create(NovelProfileDto novelProfileDto) throws Exception;
 	//공개 상태로 돌려진 소설들의 리스트를 페이징해서 불러들인다.
@@ -41,5 +43,5 @@ public interface NovelDao {
 	//공개 소설 중 조회수 합산 기준으로 상위 5개만 조회하는 기능
 	public List<NovelDto> novelListfor(int offset, int noOfRecords) throws Exception;
 	//개인 프로필을 수정하는 기능
-	public boolean profileModity(String novel_title, String novel_nickname) throws Exception;
+	public boolean profileModity(NovelProfileDto novelProfileDto) throws Exception;
 }

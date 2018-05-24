@@ -23,7 +23,7 @@
 	}
 	
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 1200px; margin: 0px;}
+    .row.content {height: 750px; margin: 0px;}
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -56,7 +56,7 @@
     	min-width: 470px;
     	border-radius: 5px;
     	margin-bottom: 20px;
-    	margin-left: 10%;
+    	margin-left: 9%;
     }
     #Table{
     	text-align: center;
@@ -116,7 +116,7 @@
 							<c:forEach var="nl" items="${novelList}">
 							<tr>
 								<td class="col-sm-2" style="text-align: center;;">${nl.novel_idx}</td>
-								<td class="col-sm-6" style="text-align: center;">[${nl.novel_title}] ${nl.novel_subtitle}</td>
+								<td class="col-sm-6" style="text-align: center;">[${nl.novel_title}]<a href="novelContent?novel_idx=${nl.novel_idx}">${nl.novel_subtitle}</a></td>
 								<td class="col-sm-4" style="text-align: center;">${nl.novel_id}</td>
 							</tr>
 							</c:forEach>

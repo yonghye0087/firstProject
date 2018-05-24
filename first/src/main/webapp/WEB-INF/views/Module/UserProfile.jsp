@@ -89,13 +89,15 @@
 			$('#profileModify').show();
 			
 			var modifyOut = '';
-			modifyOut += '<div class="well well-sm">'
+			modifyOut += '<div class="well well-sm text-left">'
+			modifyOut += '<div id="profileTable">'
 			modifyOut += '<form action="" method="post" enctype="multipart/form-data">'
 			modifyOut += '<input type="file" name="user_file">'
 			modifyOut += '<label for="user_id"> ID : </label>'
 			modifyOut += '<input type="text" class="form-controll" name="user_id" value="">'
 			modifyOut += '</form>'
 			modifyOut += '<div><button type="button" class="btn btn-default" id="modifyProfile">변경완료</button></div>'
+			modifyOut += '</div>'
 			modifyOut += '</div>'
 			$('#profileModify').append(modifyOut);	
 		}

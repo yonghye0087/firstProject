@@ -78,7 +78,11 @@ public class NovelController {
 		logger.info(novel_title);
 		logger.info(novel_id);
 		
-		String loginID = session.getAttribute("LoginID").toString();
+		/*String loginID = null;
+		if() {
+			
+		}
+		loginID = session.getAttribute("LoginID").toString();
 		String novel_id2 = null;
 		if(novel_id.equals(loginID)) {
 			novel_id2 = loginID;
@@ -86,7 +90,7 @@ public class NovelController {
 			novel_id2 = novel_id;
 		}
 		
-		logger.info(novel_id2);
+		logger.info(novel_id2);*/
 		
 		//페이징 처리 부분
 		int currentPageNo = 1;
@@ -100,7 +104,7 @@ public class NovelController {
 		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 		
 		ArrayList<NovelDto> page = new ArrayList<NovelDto>();
-		page = (ArrayList<NovelDto>) NService.readNovelByTl(offset, paging.getMaxPost(),novel_title,novel_id2);
+		page = (ArrayList<NovelDto>) NService.readNovelByTl(offset, paging.getMaxPost(),novel_title,novel_id);
 		paging.setNumberOfRecords(NService.countByCh(novel_title));
 		logger.info(page.toString());
 		
@@ -117,7 +121,7 @@ public class NovelController {
 		return "/Novel/NovelBoardCh";
 	}
 	@RequestMapping(value="/novelContent", method = RequestMethod.GET)
-	public String novelContent(@RequestParam("novel_idx")int novel_idx, Model model, HttpServletRequest req, HttpSession session) throws Exception {
+	public String novelContent(@RequestParam("novel_idx")int novel_idx,@RequestParam("novel_id")String novel_id, Model model, HttpServletRequest req, HttpSession session) throws Exception {
 		//개별타이틀 화면에서 개별 글화면으로 이동하는 기능입니다.
 		
 		logger.info("GET방식으로 개별타이틀 화면에서 개별 글 화면으로 이동합니다.");
@@ -127,8 +131,8 @@ public class NovelController {
 		logger.info("readNovelByTl GET");
 		logger.info(novel_title);
 		
-		String loginID = session.getAttribute("LoginID").toString();
-		logger.info(loginID);
+		/*String loginID = session.getAttribute("LoginID").toString();
+		logger.info(loginID);*/
 		
 		//페이징 처리부분
 		int currentPageNo = 1;
@@ -142,7 +146,7 @@ public class NovelController {
 		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 		
 		ArrayList<NovelDto> page = new ArrayList<NovelDto>();
-		page = (ArrayList<NovelDto>) NService.readNovelByTl(offset, paging.getMaxPost(),novel_title,loginID);
+		page = (ArrayList<NovelDto>) NService.readNovelByTl(offset, paging.getMaxPost(),novel_title,novel_id);
 		paging.setNumberOfRecords(NService.countByCh(novel_title));
 		
 		paging.makePaging();
@@ -224,10 +228,12 @@ public class NovelController {
 		return "/Novel/NovelSerialBoard";
 	}
 	
-	@RequestMapping(value="/serialNovelList", method = RequestMethod.POST)
+	@RequestMapping(value="/serialList", method = RequestMethod.GET)
 	@ResponseBody
-	public List<NovelProfileDto> serialNovelList() throws Exception {
+	public List<NovelProfileDto> serialNovelList(@RequestParam("Vi_idx") int vi) throws Exception {
 		//일반소설화면에서 Ajax통신을 이용해 소설정보를 가져가는 기능입니다.
+		
+		logger.info(Integer.toString(vi));
 		
 		logger.info("POST방식과 Ajax통신을 이용해 일반소설화면에 DB의 정보를 가져옵니다.");
 		
@@ -261,12 +267,51 @@ public class NovelController {
 		logger.info("POST방식과 Ajax통신을 이용하여 소설프로필 모듈의 정보를 수정합니다.");
 		logger.info(novelProfileDto.toString());
 		
-		//필요한 정보 불러오기
-		NovelProfileDto modifyProfileList = NService.readProfile(novelProfileDto.getNovel_id(), novelProfileDto.getNovel_title());
-		logger.info(modifyProfileList.toString());
+		//기입값 정의
+		int novelIdx = novelProfileDto.getNovel_title_idx();
 		
+		//파일이름 변경
+		String originalName = novel_file.getOriginalFilename();
+		int nameLength = originalName.length();
+		int extSub = originalName.lastIndexOf(".");
+		String ext = originalName.substring(extSub+1, nameLength);
+		String fileName = originalName.substring(0, extSub);
 		
-		return null;
+		//오늘날짜 구해서 파일 사이에 넣기
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        Calendar c1 = Calendar.getInstance();
+        String strToday = sdf.format(c1.getTime());
+		String newFileName = fileName+strToday+"."+ext;
+		
+		//파일 크기
+		int fileSize = originalName.length();
+		
+		//기존 쟁보 불러오기
+		NovelProfileDto NewList = NService.readProfileByMo(novelIdx);
+		
+		//기존 파일 삭제용 정의
+		String oldFileName = NewList.getNovel_img_name();
+		
+		//변경정보 저장
+		NewList.setNovel_title(novelProfileDto.getNovel_title());
+		NewList.setNovel_nickname(novelProfileDto.getNovel_nickname());
+		NewList.setNovel_img_name(newFileName);
+		NewList.setNovel_img_size(fileSize);
+		
+		boolean result = NService.profileModity(NewList);
+		
+		logger.info(NewList.toString());
+		logger.info(String.valueOf(result));
+		
+		if(result == true) {
+			String uploadPath = "F:\\WorkSpace\\firstProject\\first\\src\\main\\webapp\\resources\\ImageFile\\";
+			novel_file.transferTo(new File(uploadPath + newFileName));
+			File oldFile = new File(uploadPath + oldFileName);
+			boolean oldDelete = oldFile.delete();
+			logger.info(String.valueOf(oldDelete));
+		}
+		String newNovelTilte = URLEncoder.encode(NewList.getNovel_title(), "UTF-8");
+		return "redirect:/novelByTl?novel_title="+newNovelTilte+"&&novel_id="+NewList.getNovel_id();
 	}
 	
 	@RequestMapping(value="/selectVisibility", method = RequestMethod.POST)
@@ -373,6 +418,6 @@ public class NovelController {
 		model.addAttribute("page", page);
 		
 		//리턴 부분
-		return "/Novel/NovelSerialList";
+		return "Novel/NoveSerialList";
 	}
 }

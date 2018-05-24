@@ -15,7 +15,22 @@
 			profilenovel
 		WHERE
 			novel_id = #{novel_id} AND novel_title = #{novel_title}
-			
+	</select>
+	
+	<select id="novelProfileByMo" resultType="com.home.first.dto.NovelProfileDto" parameterType="int">
+		SELECT
+			novel_title_idx,
+			novel_nickname,
+			novel_title,
+			novel_id,
+			novel_img_name,
+			novel_img_size,
+			novel_visibility,
+			novel_date
+		FROM
+			profilenovel
+		WHERE
+			novel_title_idx = #{novel_title_idx}
 	</select>
 	
 	<select id="novelListByVi" resultType="com.home.first.dto.NovelProfileDto">
@@ -25,9 +40,10 @@
 			profilenovel
 		WHERE
 			novel_visibility = 1
-		
 		GROUP BY
 			novel_title
+		ORDER BY
+			novel_date DESC limit 0, 5
 	</select>
 	
 	<select id="novelListByid" resultType="com.home.first.dto.NovelProfileDto" parameterType="hashmap">
@@ -214,6 +230,19 @@
 			novel_visibility = #{novel_visibility}
 		WHERE
 			novel_id = #{novel_id} AND novel_title = #{novel_title}
+	</update>
+	
+	<update id="updateProfileByMo" parameterType="com.home.first.dto.NovelProfileDto">
+		UPDATE
+			profilenovel
+		SET
+			novel_nickname  = #{novel_nickname},
+			novel_title  = #{novel_title},
+			novel_img_name  = #{novel_img_name},
+			novel_img_size  = #{novel_img_size},
+			novel_visibility = #{novel_visibility}
+		WHERE
+			novel_title_idx = #{novel_title_idx}
 	</update>
 	
 	<delete id="deleteNovel" parameterType="int">
