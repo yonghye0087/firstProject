@@ -157,7 +157,24 @@
 		WHERE
 			novel_id = #{novel_id} AND novel_title = #{novel_title}
 	</select>
-	
+	<select id="novelSearch" parameterType="hashmap" resultType="com.home.first.dto.NovelDto">
+		SELECT
+			*	
+		FROM
+			novel
+		WHERE
+			novel_title like CONCAT('%',#{text},'%') OR novel_id like CONCAT('%',#{text},'%')
+		ORDER BY
+			novel_idx DESC limit #{offset}, #{noOfRecords}
+	</select>
+	<select id="novelSearchCount" parameterType="String" resultType="int">
+		SELECT
+			count(*)	
+		FROM
+			novel
+		WHERE
+			novel_title like CONCAT('%',#{text},'%') OR novel_id like CONCAT('%',#{text},'%')
+	</select>
 	<insert id="createNovel" parameterType="com.home.first.dto.NovelDto">
 		INSERT INTO novel(
 			novel_title,

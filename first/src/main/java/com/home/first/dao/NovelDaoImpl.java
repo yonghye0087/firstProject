@@ -186,5 +186,21 @@ public class NovelDaoImpl implements NovelDao {
 		return sqlSession.selectOne(NS+".novelProfileByMo", novel_title_idx);
 	}
 
+	@Override
+	public List<NovelDto> novelSearch(String text, int offset, int noOfRecords) throws Exception {
+		// 소설에서 제목 또는 작성자를 검색하는 기능
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("offset", offset);
+		params.put("noOfRecords", noOfRecords);
+		params.put("text", text);
+		return sqlSession.selectList(NS+".novelSearch", params);
+	}
+
+	@Override
+	public int novelSearchCount(String text) throws Exception {
+		// 소설에서 제목 또는 작성자를 검색할때 총 갯수를 가져오는 기능
+		return sqlSession.selectOne(NS+".novelSearchCount", text);
+	}
+
 	
 }

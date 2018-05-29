@@ -88,4 +88,12 @@ public class BoardServiceImpl implements BoardService{
 	public int boardGetCount() throws Exception {
 		return boardDao.boardGetcount();
 	}
+	@Override
+	public List<BoardDto> boardSearch(String text, int offset, int noOfRecords) throws Exception {
+		return boardDao.boardSearch(text, offset, noOfRecords);
+	}
+	@Override
+	public int boardSearchCount(String text) throws Exception {
+		return boardDao.boardSearchCount(text);
+	}
 }

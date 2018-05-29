@@ -69,16 +69,19 @@
 		FROM 
 			board
 	</select>
+	
 	<select id="currentTime" resultType="String">
 		SELECT now()
 	</select>
+	
 	<select id="boardGetCount" resultType="int">
 		SELECT 
 			count(*)
 		FROM
 			board;	
-		</select>
-		<select id="boardListByDesc" resultType="com.home.first.dto.BoardDto" parameterType="hashmap">
+	</select>
+	
+	<select id="boardListByDesc" resultType="com.home.first.dto.BoardDto" parameterType="hashmap">
 		SELECT
 			*
 		FROM
@@ -86,6 +89,7 @@
 		ORDER BY
 			board_idx DESC limit #{offset}, #{noOfRecords}
 	</select>
+	
 	<select id="boardList" resultType="com.home.first.dto.BoardDto">
         SELECT
 			* 
@@ -96,5 +100,24 @@
 		ORDER BY 
 			board_idx DESC
     </select>
-
+	
+	<select id="boardSearch" parameterType="hashmap" resultType="com.home.first.dto.BoardDto">
+		SELECT
+			*	
+		FROM
+			board
+		WHERE
+			board_title like CONCAT('%', #{text},'%') OR user_id like CONCAT('%', #{text},'%')
+		ORDER BY
+			board_idx DESC limit #{offset}, #{noOfRecords}
+	</select>
+	
+	<select id="boardSearchCount" resultType="int" parameterType="String">
+		SELECT 
+			count(*)
+		FROM
+			board
+		WHERE
+			board_title like CONCAT('%',#{text},'%') OR user_id like CONCAT('%',#{text},'%')	
+	</select>
 </mapper>

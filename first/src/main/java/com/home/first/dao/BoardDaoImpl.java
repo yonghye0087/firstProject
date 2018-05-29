@@ -71,6 +71,20 @@ public class BoardDaoImpl implements BoardDao{
 		sqlSession.selectOne(NS+".updateHit", idx);
 		
 	}
+
+	@Override
+	public List<BoardDto> boardSearch(String text, int offset, int noOfRecords) throws Exception {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("offset", offset);
+		params.put("noOfRecords", noOfRecords);
+		params.put("text", text);
+		return sqlSession.selectList(NS+".boardSearch", params);
+	}
+
+	@Override
+	public int boardSearchCount(String text) throws Exception {
+		return sqlSession.selectOne(NS+".boardSearchCount", text);
+	}
 	
 	
 }

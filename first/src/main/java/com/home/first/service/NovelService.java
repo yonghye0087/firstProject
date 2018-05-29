@@ -44,4 +44,8 @@ public interface NovelService {
 	public List<NovelDto> novelListfor(int offset, int noOfRecords) throws Exception;
 	//개인 프로필을 수정하는 기능
 	public boolean profileModity(NovelProfileDto novelProfileDto) throws Exception;
+	//소설에서 제목 또는 작성자를 검색하는 기능
+	public List<NovelDto> novelSearch(String text, int offset, int noOfRecords) throws Exception;
+	//소설의 제목 또는 작성자를 검색할때 총 갯수를 가져오는 기능
+	public int novelSearchCount(String text) throws Exception;
 }

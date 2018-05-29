@@ -18,4 +18,7 @@ public interface BoardDao {
 	public int boardGetcount() throws Exception;
 	
 	public void hitCount(Integer idx) throws Exception;
+	
+	public List<BoardDto> boardSearch(String text,int offset, int noOfRecords) throws Exception;
+	public int boardSearchCount(String text) throws Exception;
 }

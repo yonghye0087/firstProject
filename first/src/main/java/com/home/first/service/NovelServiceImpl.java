@@ -147,5 +147,17 @@ public class NovelServiceImpl implements NovelService{
 		return novelDao.readProfileByMo(novel_title_idx);
 	}
 
+	@Override
+	public List<NovelDto> novelSearch(String text, int offset, int noOfRecords) throws Exception {
+		// 소설에서 제목 또는 작성자를 검색하는 기능
+		return novelDao.novelSearch(text, offset, noOfRecords);
+	}
+
+	@Override
+	public int novelSearchCount(String text) throws Exception {
+		// //소설의 제목 또는 작성자를 검색할때 총 갯수를 가져오는 기능
+		return novelDao.novelSearchCount(text);
+	}
+
 	
 }

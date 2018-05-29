@@ -20,4 +20,7 @@ public interface BoardService {
 	//페이징
 	public List<BoardDto> boardList(int offset, int noOfRecords) throws Exception;
 	public int boardGetCount() throws Exception;
+	
+	public List<BoardDto> boardSearch(String text,int offset, int noOfRecords) throws Exception;
+	public int boardSearchCount(String text) throws Exception;
 }

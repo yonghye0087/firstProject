@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<body>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -38,11 +39,13 @@
 					<c:when test="${!empty LoginID}">
 						<c:forEach var="s" items="${LoginID}">
 							<li class="userInfo"><a href="userInfo"><c:out value="${s}" /></a></li>
-								<li><a href="logoutGET">로그아웃</a></li>
-							</c:forEach>	      			
-						</c:when>
-					</c:choose>
-				</ul>
+							<li><a href="logoutGET">로그아웃</a></li>
+						</c:forEach>	      			
+					</c:when>
+				</c:choose>
+			</ul>
 			</div>
 		</div>
 	</nav>
+</body>
+	
