@@ -137,7 +137,7 @@
 		</c:choose>
 	    </div>
 	    <div class="col-sm-2 sidenav">
-	      
+	      <jsp:include page="../Module/SearchBar.jsp"></jsp:include>
 	    </div>
 	  </div>
 	</div>

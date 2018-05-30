@@ -20,13 +20,7 @@
 	</insert>
 	<select id="readUser" parameterType="String" resultType="com.home.first.dto.UserDto">
 	SELECT
-		user_no,
-		user_id,
-		user_pw,
-		user_email,
-		user_hint,
-		user_date,
-		user_level
+		*
 	FROM
 		user
 	WHERE

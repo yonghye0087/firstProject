@@ -12,6 +12,8 @@ public class UserDto {
 	private String user_hint;
 	private int user_level;
 	private Date user_date;
+	private String user_file_name;
+	private int user_file_size;
 	private MultipartFile user_file;
 	public int getUser_no() {
 		return user_no;
@@ -55,6 +57,18 @@ public class UserDto {
 	public void setUser_date(Date user_date) {
 		this.user_date = user_date;
 	}
+	public String getUser_file_name() {
+		return user_file_name;
+	}
+	public void setUser_file_name(String user_file_name) {
+		this.user_file_name = user_file_name;
+	}
+	public int getUser_file_size() {
+		return user_file_size;
+	}
+	public void setUser_file_size(int user_file_size) {
+		this.user_file_size = user_file_size;
+	}
 	public MultipartFile getUser_file() {
 		return user_file;
 	}
@@ -65,6 +79,7 @@ public class UserDto {
 	public String toString() {
 		return "UserDto [user_no=" + user_no + ", user_id=" + user_id + ", user_pw=" + user_pw + ", user_email="
 				+ user_email + ", user_hint=" + user_hint + ", user_level=" + user_level + ", user_date=" + user_date
-				+ ", user_file=" + user_file + "]";
+				+ ", user_file_name=" + user_file_name + ", user_file_size=" + user_file_size + ", user_file="
+				+ user_file + "]";
 	}
 }

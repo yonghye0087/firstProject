@@ -1,6 +1,8 @@
 package com.home.first.controller;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.home.first.dto.UserDto;
 import com.home.first.service.UserService;
@@ -39,20 +41,39 @@ public class UserController {
 		//리턴할 주소
 		return "/User/UserSignUp";
 	}
-	
-	@RequestMapping(value="/signUpPOST", method = RequestMethod.POST)
-	@ResponseBody
-	public String signPOST(@RequestBody UserDto alldata, Model model) throws Exception{
-		//회원가입화면에서 입력한 값들을 DB에 저장합니다.
-		
+	@RequestMapping(value="/signUpPost", method = RequestMethod.POST)
+	public String signUpPost(UserDto userDto, Model model, MultipartFile user_file) throws Exception {
 		logger.info("POST방식과 AJAX통신으로 회원가입화면에서 DB로 정보를 저장합니다.");
-		logger.info(alldata.toString());
-		boolean result = UService.create(alldata);
-		logger.info(String.valueOf(result));
+		logger.info(userDto.toString());
+		logger.info(user_file.getOriginalFilename());
 		
-		//Ajax통신으로 결과값을 리턴한다. true/false의 값을 스트링 방식으로 리턴한다.
-		return String.valueOf(result);
+		//파일이름 변경하기
+		String originalName = user_file.getOriginalFilename();
+		int nameLength = originalName.length();
+		int extSub = originalName.lastIndexOf(".");
+		String ext = originalName.substring(extSub+1, nameLength);
+		String fileName = originalName.substring(0, extSub);
+		
+		//오늘날짜 구해서 파일 사이에 넣기
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        Calendar c1 = Calendar.getInstance();
+        String strToday = sdf.format(c1.getTime());
+		String newFileName = fileName+strToday+"."+ext;
+		
+		//파일 크기
+		int fileSize = originalName.length();
+		
+		//유저Dto에 정보 저장하기
+		userDto.setUser_file_name(newFileName);
+		userDto.setUser_file_size(fileSize);
+		boolean resultSet = UService.create(userDto);
+		if(resultSet != false) {
+			String uploadPath = "F:\\WorkSpace\\firstProject\\first\\src\\main\\webapp\\resources\\ImageFile\\";
+			user_file.transferTo(new File(uploadPath + newFileName));
+		}
+		return "/MainPage";
 	}
+	
 	@RequestMapping(value="/loginUserGET", method = RequestMethod.GET)
 	public String loginGET() throws Exception {
 		//상단바에서 로그인 화면으로 이동하는 기능

@@ -119,12 +119,7 @@
 			</table>
 	    </div>
 	    <div class="col-sm-2 sidenav">
-	      <div class="well">
-	        <p></p>
-	      </div>
-	      <div class="well">
-	        <p></p>
-	      </div>
+	      <jsp:include page="../Module/SearchBar.jsp"></jsp:include>
 	    </div>
 	  </div>
 	</div>

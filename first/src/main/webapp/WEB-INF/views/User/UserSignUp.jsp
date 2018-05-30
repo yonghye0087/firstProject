@@ -34,6 +34,21 @@
       }
       .row.content {height:auto;} 
     }
+    #textfont{
+    	font-weight: bold;
+    	font-size: 17px;
+    	width: 200px;
+    }
+    .input-group{
+   		margin-bottom: 2%;
+   		width: 100%;
+    }
+    #addonSize{
+    	width: 150px;
+    }
+    .has-success .form-control{
+		border-color: #24c327;
+    }
   </style>
   <script type="text/javascript">
   
@@ -45,7 +60,7 @@
   		/* 정규식 */
 		let idRegExp = /^[a-zA-Z]+[a-zA-Z0-9]{7,15}$/g;
 		let pwRegExp = /^[a-zA-Z]+[a-zA-Z0-9]{7,15}$/g;
-		let emailRegExp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+		let emailRegExp =  /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; 
 		let regExpNum = /\d/;
 		let blank_pattern =  /\s/;
 		
@@ -61,7 +76,13 @@
 		let ck_sign_pw = null;
 		let ck_sign_email = null;
 		let ck_sign_hint = null;
+		let ck_sign_file = null;
 		let alldata;
+		
+		//성공시 덧붙일 글리콘
+		
+		let glicon = '<div class="input-group-addon"><span class="glyphicon glyphicon-ok form-control-feedback"></span></div>'
+			
 		/* 아이디 유효성 검사 */
   		$('#signUpId').focusout(function(){
   			sign_id = document.getElementById("signUpId").value;
@@ -146,46 +167,37 @@
   				document.getElementById("signUpEmail").value = "";
   				$('input#signUpEmail').attr("placeholder","잘못된 이메일 형식입니다.");
   			}else{
-  				document.getElementById('divSignUpPw').className = "form-group has-success has-feedback";
+  				document.getElementById('divSignUpEmail').className = "form-group has-success has-feedback";
+  				console.log(sign_email);
   				ck_sign_email = sign_email;
   			}
   		})
   		/* hint focus out */
   		$('#signUpHint').focusout(function(){
   			sign_hint = document.getElementById("signUpHint").value;
-  			ck_sign_hint = sign_hint;
+  			if(sign_hint != ""){
+  				document.getElementById('divSignUpHint').className = "form-group has-success has-feedback";
+  				console.log(sign_hint);
+  				ck_sign_hint = sign_hint;
+  			}
   		})
+  		$('input[name=user_file]').change(function(){
+  			ck_sign_file = $('input[name=user_file]');
+  			console.log(ck_sign_file);
+  		});
   	/* 유효검사 end */
   		/* controller-ajax 통신 */
 	  	$('#signUpSmt').click(function(){
-  			console.log("id: "+sign_id+" pw: "+sign_pw+" email: "+sign_email+" hint: "+sign_hint);
-			console.log("C_id: "+ck_sign_id+" C_pw: "+ck_sign_pw+" C_email: "+ck_sign_email+" C_hint: "+ck_sign_hint);
-			alldata = {id : ck_sign_id , pw : ck_sign_pw, email : ck_sign_email, hint: ck_sign_hint};
-			
-			console.log(alldata);
-			$.ajax({
-				type: "POST",
-				url: "/signUpPOST",
-				data: JSON.stringify(alldata),
-				contentType : "application/json; charset=UTF-8",
-				dataType: "json",
-				success: function(data){
-					console.log(data);
-					if(data == true){
-						alert("계정 생성 완료");
-						document.location.href = "/loginUserGET";
-					}else{
-						alert("아이디나 이메일이 이미 존재합니다.");
-						document.location.href = "/signUpGET";
-					}
-					self.close();
-				},
-				error : function(jqXHR, textStatus, errorThrown){
-		            alert("계정 생성 에러 \n" + textStatus + " : " + errorThrown);
-				}     
-			})		
-		})
-  	})
+	  		alldata = {"user_id" : ck_sign_id , "user_pw" : ck_sign_pw, "user_email" : ck_sign_email, "user_hint": ck_sign_hint, "user_file": ck_sign_file};
+	  		console.log(alldata);
+	  		if(ck_sign_id != null && ck_sign_pw != null && ck_sign_email != null && ck_sign_hint != null && ck_sign_file != null){
+				$('form[name=signFormName]').submit();
+	  		}else{
+	  			alert("기입란을 다시한번 체크해주시기 바랍니다.")
+	  		}
+	  		
+	  	});
+	  });
   </script>
 </head>
 <body>
@@ -200,32 +212,61 @@
 	    </div>
 	    <div class="col-sm-8 text-left"> 
 	    <h2> 회원 가입</h2>
-			<form id="signForm" action="/signUpPOST" method="post">
-				<label for="id">ID : </label>
-		      		<div class="form-group" id="divSignUpId" >
-		      			<input type="text" class="form-control" id="signUpId" name="user_id"/>
+			<form id="signForm" name="signFormName" action="signUpPost" method="post" enctype="multipart/form-data">
+				<div class="input-group" id="divSignUpIdGroup">
+					<div class="input-group-addon" id="addonSize">
+						<span id="textfont">아 이 디</span>
+					</div>
+					<div class="form-group" id="divSignUpId" >
+		      			<input type="text" class="form-control" id="signUpId" name="user_id" value="asdf1234"/>
 		      		</div>
-		      		
-		      	<label for="pw">PW : </label>
-			      	<div class="form-group" id="divSignUpPw">
-			    	  	<input type="password" class="form-control" id="signUpPw" name="user_pw"/>
+				</div>
+				
+				<div class="input-group">
+					<div class="input-group-addon" id="addonSize">
+						<span id="textfont">비 밀 번 호</span>
+					</div>
+					<div class="form-group" id="divSignUpPw">
+			    	  	<input type="password" class="form-control" id="signUpPw" name="user_pw" value="asdf1234"/>
 			      	</div>
-			      	
-		      	<label for="pwck">RE-PW : </label>
-			      	<div class="form-group" id="divSignUpRePw">
-			    	  	<input type="password" class="form-control" id="signUpRePw"/>
+				</div>
+				
+				<div class="input-group">
+					<div class="input-group-addon" id="addonSize">
+						<span id="textfont">비 밀 번 호 확 인</span>
+					</div>
+					<div class="form-group" id="divSignUpRePw">
+			    	  	<input type="password" class="form-control" id="signUpRePw" value="asdf1234"/>
 			      	</div>
-			      	
-		      	<label for="email">EMAIL : </label>
-			      	<div class="form-group" id="divSignUpEmail">
-			      		<input type="text" class="form-control" id="signUpEmail" name="user_email"/>
+				</div>
+				
+				<div class="input-group">
+					<div class="input-group-addon" id="addonSize">
+						<span id="textfont">이 메 일</span>
+					</div>
+					<div class="form-group" id="divSignUpEmail">
+			      		<input type="text" class="form-control" id="signUpEmail" name="user_email" value="asdf1234@naver.com"/>
 			      	</div>
+				</div>
+				
+				<div class="input-group">
+					<div class="input-group-addon" id="addonSize">
+						<span id="textfont">힌 트</span>
+					</div>
+					<div class="form-group" id="divSignUpHint">
+			     		<input type="text" class="form-control" id="signUpHint" name="user_hint" value="asdf1234"/>
+			      	</div>
+				</div>
 		      	
-		      	<label for="hint">HINT : </label>	
-			      	<div class="form-group" >
-			     		<input type="text" class="form-control" id="signUpHint" name="user_hint"/>
+		      	<div class="input-group">
+					<div class="input-group-addon" id="addonSize">
+						<span id="textfont">섬 네 일</span>
+					</div>
+					<div class="form-group" id="divSignUpFile">
+			     		<input type="file" class="form-control" id="signUpFile" name="user_file"/>
 			      	</div>
-		      	
+				</div>
+				
 		      	<button type="button" class="btn btn-default" id="signUpSmt">submit</button>
 			</form>
 	    </div>

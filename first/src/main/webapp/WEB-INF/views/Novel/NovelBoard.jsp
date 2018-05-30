@@ -77,16 +77,16 @@
   			console.log(selboxIndex +" : "+ selTitle+" : "+selvi);
   			
   			$.ajax({
-	  				type: "post",
-	  				url: "/selectVisibility",
-	  				data: {novel_title : selTitle, novel_visibility : selvi},
-	  				success: function(){
-	  					alert("설정변경 완료");
-	  				},
-	  				error: function(){
-	  					alert("대실패!!");
-	  				}
-	  			});
+  				type: "post",
+  				url: "selectVisibility",
+  				data: {novel_title : selTitle, novel_visibility : selvi},
+  				success: function(){
+  					alert("설정변경 완료");
+  				},
+  				error: function(){
+  					alert("대실패!!");
+  				}
+  			});
   		})		
   	});
   	
@@ -182,12 +182,7 @@
 		</c:choose>
 	    </div>
 	    <div class="col-sm-2 sidenav">
-	      <div class="well">
-	        <p></p>
-	      </div>
-	      <div class="well">
-	        <p></p>
-	      </div>
+	      <jsp:include page="../Module/SearchBar.jsp"></jsp:include>
 	    </div>
 	  </div>
 	</div>

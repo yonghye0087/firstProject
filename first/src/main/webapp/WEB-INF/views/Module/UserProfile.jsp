@@ -56,7 +56,7 @@
 					outprofile += '<div class="well well-sm">'
 					outprofile += '<div id="profileTable">'
 					outprofile += '<div id="imgBox">'
-					outprofile += '<img alt="x" width="150px" height="150px" src="<c:url value="/resources/ImageFile/UnkownUser.png"/>">'
+					outprofile += '<img alt="x" width="150px" height="150px" src="<c:url value="/resources/ImageFile/'+data.userprofile.user_file_name+'"/>">'
 					outprofile += '</div>'
 					outprofile += '</div>'
 					outprofile += '<br>'
@@ -100,9 +100,6 @@
 			modifyOut += '</div>'
 			modifyOut += '</div>'
 			$('#profileModify').append(modifyOut);	
-		}
-		document.getElementById("modifyProfile").onclick = function(){
-			
 		}
 	}
 </script>
