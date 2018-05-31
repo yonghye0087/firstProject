@@ -56,7 +56,11 @@
 					outprofile += '<div class="well well-sm">'
 					outprofile += '<div id="profileTable">'
 					outprofile += '<div id="imgBox">'
-					outprofile += '<img alt="x" width="150px" height="150px" src="<c:url value="/resources/ImageFile/'+data.userprofile.user_file_name+'"/>">'
+					if(data.userprofile.user_file_name == null){
+						outprofile += '<img alt="x" width="150px" height="150px" src="<c:url value="/resources/ImageFile/UnkownUser.png"/>">'
+					}else{
+						outprofile += '<img alt="x" width="150px" height="150px" src="<c:url value="/resources/ImageFile/'+data.userprofile.user_file_name+'"/>">'
+					}
 					outprofile += '</div>'
 					outprofile += '</div>'
 					outprofile += '<br>'

@@ -68,6 +68,9 @@
     .commentUpdate{
     	float: right;
     }
+   	#tbodyAlign{
+   		
+   	}
   </style>
 </head>
 <body>
@@ -85,35 +88,37 @@
 	    	<table class="table row">
 				<thead>
 					<tr>
-						<th class="col-md-2" style="text-align: center;;">No</th>
+						<th class="col-md-1" style="text-align: left;">No</th>
 						<th class="col-md-2" style="text-align: center;">ID</th>
 						<th class="col-md-4" style="text-align: center;">EMAIL</th>
 						<th class="col-md-2" style="text-align: center;">SIGN UP DATE</th>
 						<th class="col-md-2" style="text-align: center;">LV</th>
+						<th class="col-md-1" style="text-align: center;">LV Switch</th>
 					</tr>
 				</thead>
-				<tbody>
-					<c:forEach var="ml" items="${managerList}">
-						
+				<tbody id="tbodyAlign">
+					<c:forEach var="ml" items="${managerList}" varStatus="status">
+							<input type="hidden" id="MEndNum${status.last}" value="${status.index}">
 							<tr>
-								<td class="col-md-2" style="text-align: center;">${ml.user_no}</td>
+								<td class="col-md-1" style="text-align: left;">${ml.user_no}<input type="hidden" name="user_no_M${status.index}" value="${ml.user_no}"></td>
 								<td class="col-md-2" style="text-align: center;">${ml.user_id}</td>
 								<td class="col-md-4" style="text-align: center;">${ml.user_email}</td>
-								<td class="col-md-2" style="text-align: center;">${ml.user_date}</td>
-								<td class="col-md-2" style="text-align: center;">관리자</td>
+								<td class="col-md-2" style="text-align: center;"><fmt:formatDate value="${ml.user_date}" pattern="yyyy-MM-dd hh:mm:ss"/></td>
+								<td class="col-md-2" style="text-align: center;">관리자<input type="hidden" name="user_level" value="${ml.user_level}"></td>
+								<td class="col-md-1" style="text-align: center;"><a name="MswitLv"><span class="glyphicon glyphicon-cog"></span></a></td>
 							</tr>
 					</c:forEach>
 				</tbody>
-				<tbody>
-					<hr>
-					<c:forEach var="gl" items="${guestList}">	
-							<tr>
-								<td class="col-md-2" style="text-align: center;">${gl.user_no}</td>
-								<td class="col-md-2" style="text-align: center;">${gl.user_id}</td>
-								<td class="col-md-4" style="text-align: center;">${gl.user_email}</td>
-								<td class="col-md-2" style="text-align: center;">${gl.user_date}</td>
-								<td class="col-md-2" style="text-align: center;">일반 회원</td>
-							</tr>
+				<tbody id="tbodyAlign">
+					<c:forEach var="gl" items="${guestList}" varStatus="status">
+						<tr>
+							<td class="col-md-1" style="text-align: left;">${gl.user_no}<input type="hidden" name="user_no_${status.index}" value="${gl.user_no}"></td>
+							<td class="col-md-2" style="text-align: center;">${gl.user_id}</td>
+							<td class="col-md-4" style="text-align: center;">${gl.user_email}</td>
+							<td class="col-md-2" style="text-align: center;"><fmt:formatDate value="${gl.user_date}" pattern="yyyy-MM-dd hh:mm:ss"/></td>
+							<td class="col-md-2" style="text-align: center;">일반 회원<input type="hidden" name="user_level" value="${gl.user_level}"></td>
+							<td class="col-md-1" style="text-align: center;"><a name="GswitLv"><span class="glyphicon glyphicon-cog"></span></a></td>
+						</tr>
 					</c:forEach>
 				</tbody>			
 			</table>
@@ -124,4 +129,54 @@
 	  </div>
 	</div>
 </body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		let SwitLv;
+		let userNo;
+		let userLv;
+		let alldata;
+		let MlistEndNum = $('#MEndNumtrue').val();
+		console.log(MlistEndNum);
+		$('a[name=MswitLv]').click(function(){
+			SwitLv = $('a[name=MswitLv]').index(this);
+			userNo = $('input[name=user_no_M'+SwitLv+']').val();
+			console.log(SwitLv);
+			console.log(userNo);
+			confirm("변경하시겠습니까?");
+			if(true){
+				userLv = 0;
+				alldata = {"user_no": userNo,"user_level": userLv}
+				LvChange(alldata);
+			}
+		})
+		$('a[name=GswitLv]').click(function(){
+			SwitLv = $('a[name=GswitLv]').index(this);
+			userNo = $('input[name=user_no_'+SwitLv+']').val();
+			console.log(userNo);
+			confirm("변경하시겠습니까?");
+			if(true){
+				userLv = 1;
+				alldata = {"user_no": userNo,"user_level": userLv}
+				LvChange(alldata);
+			}
+		})
+	})
+	
+	function LvChange(alldata){
+		console.log(alldata);
+		$.ajax({
+			type: "post",
+			url: "userLvChange",
+			data: alldata,
+			success: function(data){
+				if(data == "success"){
+					location.reload();
+				}
+			},
+			error: function(){
+				alert("error!")
+			}
+		})	
+	}
+</script>
 </html>

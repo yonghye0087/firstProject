@@ -30,8 +30,8 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public UserDto read(String id) throws Exception {
-		return sqlSession.selectOne(NS+".readUser", id);	
+	public UserDto read(String user_id) throws Exception {
+		return sqlSession.selectOne(NS+".readUser", user_id);	
 	}
 
 	@Override
@@ -47,8 +47,18 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public List<UserDto> listAll(int level) throws Exception {
-		return sqlSession.selectList(NS+".listAllUser", level);
+	public List<UserDto> listAll(int user_level) throws Exception {
+		return sqlSession.selectList(NS+".listAllUser", user_level);
+	}
+
+	@Override
+	public int lvUpdate(UserDto userDto) throws Exception {
+		return sqlSession.update(NS+".updateUserLv", userDto);
+	}
+
+	@Override
+	public UserDto readByNo(int user_no) throws Exception {
+		return sqlSession.selectOne(NS+".userReadByNo", user_no);
 	}
 
 }

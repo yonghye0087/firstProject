@@ -11,4 +11,6 @@ public interface UserService {
 	public void remove(UserDto UserDto) throws Exception;
 	public List<UserDto> listAll(int level) throws Exception;
 	public boolean login(UserDto UserDto) throws Exception;
+	public boolean lvUpdate(UserDto userDto) throws Exception;
+	public UserDto readByNo(int user_no) throws Exception;
 }

@@ -15,11 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.home.first.dto.UserDto;
 import com.home.first.service.UserService;
@@ -171,5 +173,21 @@ public class UserController {
 		
 		//리턴할 주소
 		return "/User/UserTermsOfMembership";
+	}
+	@RequestMapping(value="/userLvChange", method = RequestMethod.POST)
+	@ResponseBody
+	public String LvChange(@RequestParam("user_no") int user_no, @RequestParam("user_level") int user_level, Model model) throws Exception {
+		logger.info(Integer.toString(user_no));
+		logger.info(Integer.toString(user_level));
+		UserDto userDto = UService.readByNo(user_no);
+		userDto.setUser_level(user_level);
+		boolean resultSet = UService.lvUpdate(userDto);
+		if(resultSet == true) {
+			List<UserDto> guestList = UService.listAll(0);
+			List<UserDto> managerList = UService.listAll(1);
+			model.addAttribute("guestList", guestList);
+			model.addAttribute("managerList", managerList);
+		}
+		return "success";
 	}
 }

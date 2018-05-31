@@ -41,8 +41,17 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	private NovelService NService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, HttpSession session) {
+	public String home(Locale locale, Model model, HttpSession session) throws Exception {
 		session.invalidate();
+		List<BoardDto> boardList = Bservice.boardList(0, 5);
+		List<UserDto> guestList = UService.listAll(0);
+		List<NovelDto> novelList = NService.readNovelVi(0, 5);
+		logger.info(boardList.toString());
+		logger.info(guestList.toString());
+		logger.info(novelList.toString());
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("guestList", guestList);
+		model.addAttribute("novelList", novelList);
 		return "/MainPage";
 	}
 	@RequestMapping(value = "/home", method = RequestMethod.GET)

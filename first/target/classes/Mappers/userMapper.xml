@@ -1,56 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.home.first.mapper.userMapper">
-	<insert id="createUser" parameterType="com.home.first.dto.UserDto">
-	INSERT INTO user(
-		user_id,
-		user_pw,
-		user_email,
-		user_hint,
-		user_file_name,
-		user_file_size
-	)VALUES(
-		#{user_id}, 
-		#{user_pw}, 
-		#{user_email}, 
-		#{user_hint},
-		#{user_file_name},
-		#{user_file_size}
-	)
-	</insert>
+	
 	<select id="readUser" parameterType="String" resultType="com.home.first.dto.UserDto">
-	SELECT
-		*
-	FROM
-		user
-	WHERE
-		user_id = #{user_id}
-	</select>
-	<update id="updateUser">
-	UPDATE
-		user
-	SET
-		user_pw = #{user_pw}
-		user_email = #{user_email}
-		user_hint = #{user_hint}
-	WHERE
-		user_id = #{user_id}	
-	</update>
-	<delete id="deleteUser" parameterType="com.home.first.dto.UserDto">
-	DELETE FROM 
-		user
-	WHERE 
-		user_id = #{user_id}
-		user_pw = #{user_pw}
-	</delete>
-	<select id="listAllUser" parameterType="int" resultType="com.home.first.dto.UserDto">
-	<![CDATA[
 		SELECT
 			*
 		FROM
 			user
 		WHERE
+			user_id = #{user_id}
+	</select>
+	
+	<insert id="createUser" parameterType="com.home.first.dto.UserDto">
+		INSERT INTO user(
+			user_id,
+			user_pw,
+			user_email,
+			user_hint,
+			user_file_name,
+			user_file_size
+		)VALUES(
+			#{user_id}, 
+			#{user_pw}, 
+			#{user_email}, 
+			#{user_hint},
+			#{user_file_name},
+			#{user_file_size}
+		)
+	</insert>
+	
+	<update id="updateUser">
+		UPDATE
+			user
+		SET
+			user_pw = #{user_pw},
+			user_email = #{user_email},
+			user_hint = #{user_hint}
+		WHERE
+			user_id = #{user_id}	
+	</update>
+	
+	<update id="updateUserLv" parameterType="com.home.first.dto.UserDto">
+		UPDATE
+			user
+		SET
 			user_level = #{user_level}
-	]]>
+		WHERE
+			user_no = #{user_no}	
+	</update>
+	
+	<delete id="deleteUser" parameterType="com.home.first.dto.UserDto">
+		DELETE FROM 
+			user
+		WHERE 
+			user_id = #{user_id} and
+			user_pw = #{user_pw}
+	</delete>
+	
+	<select id="listAllUser" parameterType="int" resultType="com.home.first.dto.UserDto">
+		<![CDATA[
+			SELECT
+				*
+			FROM
+				user
+			WHERE
+				user_level = #{user_level}
+		]]>
+	</select>
+	
+	<select id="userReadByNo" parameterType="int" resultType="com.home.first.dto.UserDto">
+		SELECT
+			*
+		FROM
+			user
+		WHERE
+			user_no = #{user_no}
 	</select>
 </mapper>

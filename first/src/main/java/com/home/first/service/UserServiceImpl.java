@@ -64,6 +64,19 @@ public class UserServiceImpl implements UserService {
 		}
 		return resultLogin;
 	}
+	@Override
+	public boolean lvUpdate(UserDto userDto) throws Exception {
+		int result = userDao.lvUpdate(userDto);
+		boolean resultType = false;
+		if(result != 0) {
+			resultType = true;
+		}
+		return resultType;
+	}
+	@Override
+	public UserDto readByNo(int user_no) throws Exception {
+		return userDao.readByNo(user_no);
+	}
 }
 	
 
