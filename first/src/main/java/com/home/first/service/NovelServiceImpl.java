@@ -159,5 +159,11 @@ public class NovelServiceImpl implements NovelService{
 		return novelDao.novelSearchCount(text);
 	}
 
+	@Override
+	public void novelHitPlus(int novel_idx) throws Exception {
+		// 소설의 본문을 클릭시 조회수를  +1해주는 기능
+		novelDao.novelHitPlus(novel_idx);		
+	}
+
 	
 }

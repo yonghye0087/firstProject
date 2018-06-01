@@ -98,7 +98,7 @@ public class UserController {
 			boolean rs = UService.login(UserDto);
 			logger.info("Login process starting");
 			if(rs == true) {
-				resultMapping = "/MainPage";
+				resultMapping = "redirect:/home";
 				session.setAttribute("LoginID", IDCheck.getUser_id());
 				session.setAttribute("UserLv", IDCheck.getUser_level());
 				logger.info(IDCheck.getUser_id());

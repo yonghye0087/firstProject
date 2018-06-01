@@ -23,7 +23,7 @@
 	}
 	
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 750px; margin: 0px;}
+    .row.content {height: 790px; margin: 0px;}
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -33,7 +33,20 @@
       width: 15%;
       border-radius: 5px;
     }
-    
+     /* Set black background color, white text and some padding */
+    footer {
+      left: 15px;
+      right: 15px;
+      margin-top: 15px;
+  	  margin-left: 15px;
+      padding: 5px;
+      border-radius: 5px;
+      position: fixed;
+      width: 98.5%;
+      bottom: 15px;
+      background-color: black;
+      color: gray;
+    }
     /* On small screens, set height to 'auto' for sidenav and grid */
     @media screen and (max-width: auto;) {
       .sidenav {
@@ -50,7 +63,7 @@
     }
     .sideBoard {
     	float: left;
-    	max-height: 250px;
+    	max-height: 300px;
     	max-width: 470px;
     	min-height: 250px; 
     	min-width: 470px;
@@ -62,18 +75,17 @@
     	text-align: center;
     	margin-top: 0;
     	margin-left: 1px;
-    	
     }
     .well{
     	padding-top: 0px;
-    	height: 230px;
+    	height: 250px;
     	width:  450px;
     }
 </style>
 </head>
 <body>
 	 <jsp:include page="./Module/Navbar.jsp"/>
-	<div class="container-fluid">    
+	<div class="container-fluid">	 
 	  <div class="row content">
 	    <div class="col-sm-2 sidenav">
 	    </div>
@@ -153,5 +165,8 @@
 	    </div>
 	  </div>
 	</div>
+	<footer class="container-fluid">
+		<p>Footer Text</p>
+	</footer>
 </body>
 </html>

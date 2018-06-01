@@ -28,7 +28,7 @@
 	}
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 1200px; margin: 0px;}
+    .row.content {height: 790px; margin: 0px;}
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -38,7 +38,20 @@
       width: 15%;
       border-radius: 5px;
     }
-    
+     /* Set black background color, white text and some padding */
+    footer {
+      left: 15px;
+      right: 15px;
+      margin-top: 15px;
+  	  margin-left: 15px;
+      padding: 5px;
+      border-radius: 5px;
+      position: fixed;
+      width: 98.5%;
+      bottom: 15px;
+      background-color: black;
+      color: gray;
+    }
     /* On small screens, set height to 'auto' for sidenav and grid */
     @media screen and (max-width: 767px) {
       .sidenav {
@@ -141,5 +154,8 @@
 	    </div>
 	  </div>
 	</div>
+	<footer class="container-fluid">
+		<p>Footer Text</p>
+	</footer>
 </body>
 </html>

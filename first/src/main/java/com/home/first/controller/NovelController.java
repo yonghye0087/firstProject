@@ -78,20 +78,6 @@ public class NovelController {
 		logger.info(novel_title);
 		logger.info(novel_id);
 		
-		/*String loginID = null;
-		if() {
-			
-		}
-		loginID = session.getAttribute("LoginID").toString();
-		String novel_id2 = null;
-		if(novel_id.equals(loginID)) {
-			novel_id2 = loginID;
-		} else {
-			novel_id2 = novel_id;
-		}
-		
-		logger.info(novel_id2);*/
-		
 		//페이징 처리 부분
 		int currentPageNo = 1;
 		int maxPost = 10;
@@ -128,6 +114,10 @@ public class NovelController {
 		
 		NovelDto novelContent = NService.read(novel_idx);
 		String novel_title = novelContent.getNovel_title();
+		if(novelContent != null) {
+			NService.novelHitPlus(novel_idx);
+			logger.info(Integer.toString(novelContent.getNovel_hit()));
+		}
 		logger.info("readNovelByTl GET");
 		logger.info(novel_title);
 		
@@ -155,6 +145,7 @@ public class NovelController {
 		model.addAttribute("page", page);
 		model.addAttribute("paging", paging);
 		model.addAttribute("novelContent", novelContent);
+		
 		
 		//리턴할 주소
 		return "/Novel/NovelContent";

@@ -48,4 +48,6 @@ public interface NovelDao {
 	public List<NovelDto> novelSearch(String text, int offset, int noOfRecords) throws Exception;
 	//소설의 제목 또는 작성자를 검색할때 총 갯수를 가져오는 기능
 	public int novelSearchCount(String text) throws Exception;
+	//소설의 조회수를 추가하는 기능
+	public void novelHitPlus(int novel_idx) throws Exception;
 }

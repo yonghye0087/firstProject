@@ -262,6 +262,14 @@
 			novel_title_idx = #{novel_title_idx}
 	</update>
 	
+	<update id="novelHitPlus" parameterType="int">
+		UPDATE
+			novel
+		SET
+			novel_hit = novel_hit+1
+		WHERE
+			novel_idx = #{novel_idx}
+	</update>
 	<delete id="deleteNovel" parameterType="int">
 		DELETE FROM 
 			novel

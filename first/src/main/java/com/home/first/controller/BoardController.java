@@ -115,6 +115,8 @@ public class BoardController {
 		model.addAttribute("paging", paging);
 		model.addAttribute("boardRead", Bservice.read(board_idx));
 		
+		logger.info(Bservice.read(board_idx).toString());
+		
 		//리턴할 주소
 		return "/Board/BoardContent";
 	}

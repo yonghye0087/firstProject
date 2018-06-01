@@ -202,5 +202,12 @@ public class NovelDaoImpl implements NovelDao {
 		return sqlSession.selectOne(NS+".novelSearchCount", text);
 	}
 
+	@Override
+	public void novelHitPlus(int novel_idx) throws Exception {
+		// 소설의 본문을 클릭시 조회수를 +1해주는 기능
+		sqlSession.update(NS+".novelHitPlus", novel_idx);
+		
+	}
+
 	
 }
